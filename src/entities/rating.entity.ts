@@ -9,5 +9,5 @@ export class Rating {
   recomendation: string;
 
   @Column()
-  note: string;
+  note: Number;
 }
