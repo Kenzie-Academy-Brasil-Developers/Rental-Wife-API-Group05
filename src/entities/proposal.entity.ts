@@ -1,5 +1,6 @@
 import {
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -23,6 +24,9 @@ export class Proposals {
 
   @Column()
   status: string;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @ManyToOne(() => UserEmployer, (userEmployer) => userEmployer.proposals)
   employer: UserEmployer;
