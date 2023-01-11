@@ -3,6 +3,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Column,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -40,6 +41,9 @@ export class UserHired {
 
   @Column({ nullable: true })
   location: string;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 
   @OneToMany(() => Proposals, (proposals) => proposals.hired)
   proposals: Proposals[];
