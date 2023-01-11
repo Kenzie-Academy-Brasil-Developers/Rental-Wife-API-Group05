@@ -1,13 +1,13 @@
 import {
-    BeforeInsert,
-    BeforeUpdate,
-    Column,
-    DeleteDateColumn,
-    Entity,
-    JoinColumn,
-    OneToMany,
-    OneToOne,
-    PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { hashSync } from "bcryptjs";
 import { Proposals } from "./proposal.entity";
