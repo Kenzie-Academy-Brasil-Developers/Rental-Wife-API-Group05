@@ -1,1 +1,4 @@
-export interface ISessionRequest {}
+export interface ILoginRequest {
+  email: string;
+  password: string;
+}
