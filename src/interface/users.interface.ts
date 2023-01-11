@@ -31,3 +31,7 @@ export interface IResponseUpdateAddress {
     city: string;
     state: string;
 }
+
+export interface IRequestUpdateService {
+    services?: string;
+}
