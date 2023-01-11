@@ -15,43 +15,43 @@ import { Address } from "./address.entity";
 
 @Entity("user_employer")
 export class UserEmployer {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column()
-  email: string;
+    @Column()
+    email: string;
 
-  @Column()
-  password: string;
+    @Column()
+    password: string;
 
-  @Column()
-  is_hired: boolean;
+    @Column()
+    is_hired: boolean;
 
-  @Column()
-  avatar_img: string;
+    @Column()
+    avatar_img: string;
 
-  @Column({ nullable: true })
-  gender: string;
+    @Column({ nullable: true })
+    gender: string;
 
-  @Column({ nullable: true })
-  location: string;
+    @Column({ nullable: true })
+    location: string;
 
-  @DeleteDateColumn()
-  deletedAt?: Date;
+    @DeleteDateColumn()
+    deletedAt?: Date;
 
-  @OneToMany(() => Proposals, (proposals) => proposals.employer)
-  proposals: Proposals[];
+    @OneToMany(() => Proposals, (proposals) => proposals.employer)
+    proposals: Proposals[];
 
-  @OneToOne(() => Address)
-  @JoinColumn()
-  address: Address;
+    @OneToOne(() => Address)
+    @JoinColumn()
+    address: Address;
 
-  @BeforeUpdate()
-  @BeforeInsert()
-  hashPassword() {
-    this.password = hashSync(this.password, 10);
-  }
+    @BeforeUpdate()
+    @BeforeInsert()
+    hashPassword() {
+        this.password = hashSync(this.password, 10);
+    }
 }
