@@ -1,6 +1,3 @@
-import { Address } from "../entities/address.entity";
-import { Proposals } from "../entities/proposal.entity";
-
 export interface IRequestUpdateUser {
     name?: string;
     email?: string;
@@ -16,4 +13,21 @@ export interface IResponseUpdateUser {
     avatar_img: string;
     gender: string;
     is_hired: boolean;
+}
+
+export interface IRequestUpdateAddress {
+    street?: string;
+    zipCode?: string;
+    number?: string;
+    city?: string;
+    state?: string;
+}
+
+export interface IResponseUpdateAddress {
+    id: string;
+    street: string;
+    zipCode: string;
+    number: string;
+    city: string;
+    state: string;
 }
