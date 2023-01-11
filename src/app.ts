@@ -10,7 +10,7 @@ import { errorHandler } from "./errors";
 // } from "./routes";
 import * as router from "./routes";
 
-export const app = express();
+const app = express();
 
 app.use(express.json());
 
@@ -24,5 +24,6 @@ app.use("/login", router.loginRouter);
 app.use("/register", router.registerRouter);
 app.use("/proposals", router.proposalsRouter);
 
-
 app.use(errorHandler);
+
+export default app;
