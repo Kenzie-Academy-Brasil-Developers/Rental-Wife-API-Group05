@@ -1,7 +1,13 @@
-import { Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity("rating")
-export class User {
+export class Rating {
   @PrimaryColumn("uuid")
-  readonly id: string;
+  id: string;
+
+  @Column()
+  recomendation: string;
+
+  @Column()
+  note: string;
 }
