@@ -1,7 +1,22 @@
-import { Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity("address")
-export class User {
+export class Address {
   @PrimaryColumn("uuid")
-  readonly id: string;
+  id: string;
+
+  @Column()
+  street: string;
+
+  @Column()
+  zipCode: string;
+
+  @Column()
+  number: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  state: string;
 }
