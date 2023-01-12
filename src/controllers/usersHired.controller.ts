@@ -33,6 +33,6 @@ export const updateServiceUserHired = async (req: Request, res: Response) => {
 };
 
 export const deleteUserHired = async (req: Request, res: Response) => {
-    await deleteUserHiredService(req.params.id);
-    return res.status(204);
+    await deleteUserHiredService(req.user.id);
+    return res.status(204).json({});
 };

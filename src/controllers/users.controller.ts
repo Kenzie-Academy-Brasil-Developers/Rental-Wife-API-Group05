@@ -1,9 +1,13 @@
 import {
     updateAddressUserService,
     deleteUserEmployerService,
-    updateUserEmployerService,
+    updateUserEmployerService
 } from "../services/users/users.service";
 import { Request, Response } from "express";
+
+export const getEmployerUser = async (req: Request, res: Response) => {
+    return res.status(200).json(req.user);
+};
 
 export const updateEmployerUser = async (req: Request, res: Response) => {
     const data = await updateUserEmployerService(req.body, req.params.id);
@@ -17,5 +21,5 @@ export const updateAddressUser = async (req: Request, res: Response) => {
 
 export const deleteEmployerUser = async (req: Request, res: Response) => {
     await deleteUserEmployerService(req.params.id);
-    return res.status(204);
+    return res.status(204).json({});
 };

@@ -9,17 +9,18 @@ const userEmployerRepo = AppDataSource.getRepository(UserEmployer);
 const addressRepo = AppDataSource.getRepository(Address);
 
 const updateUserEmployerService = async (body: IRequestUpdateUser, userId: string): Promise<IResponseUpdateUser> => {
-    const updatedUser = userEmployerRepo.create({ ...body, id: userId });
-    await userEmployerRepo.save(updatedUser);
-    return await updateUserResponseShape.validate(updatedUser, {
+    const userFound = await userEmployerRepo.findOneBy({ id: userId });
+    const updatedUser = userEmployerRepo.create({ ...userFound, ...body });
+    const newResult = await userEmployerRepo.save(updatedUser);
+    return await updateUserResponseShape.validate(newResult, {
         stripUnknown: true,
     });
 };
 
 const updateAddressUserService = async (body: IRequestUpdateAddress, userId: string): Promise<IResponseUpdateAddress> => {
     const updateAddress = addressRepo.create({ ...body, id: userId });
-    await addressRepo.save(updateAddress);
-    return await updateAddressResponseShape.validate(updateAddress, {
+    const newResult = await addressRepo.save(updateAddress);    
+    return await updateAddressResponseShape.validate(newResult, {
         stripUnknown: true
     });
 };
