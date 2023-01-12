@@ -9,7 +9,7 @@ export const verifyAuthMiddleware = async (
 ) => {
   const authToken = req.headers.authorization;
   if (!authToken) {
-    throw new AppError("MIssing authorization headers", 401);
+    throw new AppError("Missing authorization headers", 401);
   }
 
   const token = authToken.split(" ")[1];
