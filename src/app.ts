@@ -7,6 +7,8 @@ import {
   proposalsRouter,
   registerRouter,
   usersRouter,
+  adminRoutes,
+  servicesRoutes,
 } from "./routes";
 
 const app = express();
@@ -17,6 +19,8 @@ app.use("/users", usersRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/proposals", proposalsRouter);
+app.use("/admin", adminRoutes);
+app.use("/services", servicesRoutes);
 
 app.use(errorHandler);
 

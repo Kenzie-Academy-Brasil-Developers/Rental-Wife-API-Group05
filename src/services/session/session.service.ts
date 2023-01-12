@@ -3,13 +3,13 @@ import { AppDataSource } from "../../data-source";
 import { UserEmployer } from "../../entities/userEmployer.entity";
 import { UserHired } from "../../entities/userHired.entity";
 import { AppError } from "../../errors";
-import { ISessionRequest } from "../../interface/session.interface";
 import jwt from "jsonwebtoken";
+import { ILoginRequest } from "../../interface";
 
 export const loginService = async ({
   email,
   password,
-}: ISessionRequest): Promise<string> => {
+}: ILoginRequest): Promise<string> => {
   const userERepository = AppDataSource.getRepository(UserEmployer);
   const userHRepository = AppDataSource.getRepository(UserHired);
 
