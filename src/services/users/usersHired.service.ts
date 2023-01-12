@@ -16,6 +16,14 @@ const userHiredRepo = AppDataSource.getRepository(UserHired);
 const addressRepo = AppDataSource.getRepository(Address);
 const ServicesRepo = AppDataSource.getRepository(Services);
 
+const getHiredUserService = async (userId: string): Promise<UserHired> => {
+    return await userHiredRepo.findOneBy({ id: userId })
+}
+
+const getAllHiredUsersService = async (): Promise<UserHired[]> => {
+    return await userHiredRepo.find()
+};
+
 const updateUserHiredService = async (body: IRequestUpdateUser, userId: string): Promise<IResponseUpdateUser> => {
     const updatedUser = userHiredRepo.create({ ...body, id: userId });
     await userHiredRepo.save(updatedUser);
@@ -44,4 +52,4 @@ const deleteUserHiredService = async (userId: string): Promise<DeleteResult> => 
     return await userHiredRepo.softDelete(userId);
 };
 
-export { updateAddressUserHiredService, updateUserHiredService, updateServicesService, deleteUserHiredService };
+export { getHiredUserService, getAllHiredUsersService, updateAddressUserHiredService, updateUserHiredService, updateServicesService, deleteUserHiredService };
