@@ -1,4 +1,4 @@
-import { ILoginRequest } from "../../../interface";
+import { ILoginRequest } from "../../../interface/session.interface";
 
 export const mockedLogin: ILoginRequest = {
   email: "email@mail.com",
@@ -29,4 +29,3 @@ export const mockedLoginHired2: ILoginRequest = {
  email: "email2Hired@mail.com",
  password: "123456",
 };
-

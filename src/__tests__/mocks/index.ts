@@ -7,6 +7,7 @@ import {
   mockedWrongLogin,
 } from "./integration/login.mock";
 import { mockedEditProposal, mockedProposal } from "./integration/proposals.mock";
+
 import {
   mockedEmployerRegister,
   mockedAlreadyRegister,
@@ -29,5 +30,4 @@ export {
   mockedLoginHired2,
   mockedProposal,
   mockedEditProposal
-
 };
