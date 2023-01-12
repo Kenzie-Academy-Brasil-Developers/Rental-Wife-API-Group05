@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-export interface IRegisterRequest {
-  email: string;
-  password: string;
-  avatar_img: string;
-  name: string;
-  is_hired: boolean;
-=======
 export interface IRequestUpdateUser {
     name?: string;
     email?: string;
@@ -65,5 +57,4 @@ export interface IAdress {
   number: string;
   city: string;
   state: string;
->>>>>>> 65e32a0892b9763172410174153c0549b86239f3
 }
