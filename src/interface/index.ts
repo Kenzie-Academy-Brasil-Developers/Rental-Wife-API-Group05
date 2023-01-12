@@ -1,3 +1,4 @@
-import { IUser } from "./users.interface";
+import { IRegisterRequest } from "./users.interface";
+import { ILoginRequest } from "./session.interface";
 
-export { IUser };
+export { ILoginRequest, IRegisterRequest };
