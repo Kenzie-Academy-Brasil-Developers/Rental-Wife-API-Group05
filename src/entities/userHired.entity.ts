@@ -59,6 +59,8 @@ export class UserHired {
   @BeforeUpdate()
   @BeforeInsert()
   hashPassword(): void {
-    this.password = hashSync(this.password, 10);
+    if (this.password) {
+      this.password = hashSync(this.password, 10);
+    }
   }
 }

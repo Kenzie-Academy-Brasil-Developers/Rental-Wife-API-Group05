@@ -7,8 +7,7 @@ export const updateUserResponseShape: SchemaOf<IResponseUpdateUser> = yup.object
     name: yup.string().required(),
     email: yup.string().required(),
     avatar_img: yup.string().required(),
-    gender: yup.string().required(),
-    is_hired: yup.boolean().required(),
+    gender: yup.string().nullable(true)
 });
 
 export const updateAddressResponseShape: SchemaOf<IResponseUpdateAddress> = yup.object().shape({

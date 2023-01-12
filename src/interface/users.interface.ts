@@ -11,8 +11,6 @@ export interface IResponseUpdateUser {
   name: string;
   email: string;
   avatar_img: string;
-  gender: string;
-  is_hired: boolean;
 }
 
 export interface IRequestUpdateAddress {
