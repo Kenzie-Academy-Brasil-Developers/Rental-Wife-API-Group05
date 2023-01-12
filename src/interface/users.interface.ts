@@ -1,39 +1,39 @@
 export interface IRequestUpdateUser {
-  name?: string;
-  email?: string;
-  password?: string;
-  avatar_img?: string;
-  gender?: string;
+    name?: string;
+    email?: string;
+    password?: string;
+    avatar_img?: string;
+    gender?: string;
 }
 
 export interface IResponseUpdateUser {
-  id: string;
-  name: string;
-  email: string;
-  avatar_img: string;
-  gender: string;
-  is_hired: boolean;
+    id: string;
+    name: string;
+    email: string;
+    avatar_img: string;
+    gender: string;
+    is_hired: boolean;
 }
 
 export interface IRequestUpdateAddress {
-  street?: string;
-  zipCode?: string;
-  number?: string;
-  city?: string;
-  state?: string;
+    street?: string;
+    zipCode?: string;
+    number?: string;
+    city?: string;
+    state?: string;
 }
 
 export interface IResponseUpdateAddress {
-  id: string;
-  street: string;
-  zipCode: string;
-  number: string;
-  city: string;
-  state: string;
+    id: string;
+    street: string;
+    zipCode: string;
+    number: string;
+    city: string;
+    state: string;
 }
 
 export interface IRequestUpdateService {
-  services?: string;
+    services?: string;
 }
 
 export interface IEmployer {
@@ -41,10 +41,7 @@ export interface IEmployer {
   name: string;
   email: string;
   avatar_img: string;
-  address?: IAddress | null;
-}
-export interface IHired extends IEmployer {
-  services?: IServices | null;
+  address?: IAdress | null;
 }
 
 export interface IUserWithoutPass {
@@ -53,16 +50,7 @@ export interface IUserWithoutPass {
   email: string;
 }
 
-export interface IAddress {
-  id: string;
-  street: string;
-  zipCode: string;
-  number: string;
-  city: string;
-  state: string;
-}
-
-export interface IServices {
+export interface IAdress {
   id: string;
   street: string;
   zipCode: string;
