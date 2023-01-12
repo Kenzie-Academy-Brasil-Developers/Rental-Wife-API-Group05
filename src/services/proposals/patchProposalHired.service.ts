@@ -6,7 +6,7 @@ import {
   IProposalPatchRequest,
 } from "./../../interface/proposals.interface";
 
-export const patchProposalService = async (
+export const patchProposalHiredService = async (
   proposalId: string,
   updatedBody: IProposalPatchRequest
 ): Promise<IProposalResponse> => {

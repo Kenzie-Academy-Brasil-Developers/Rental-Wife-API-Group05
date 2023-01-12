@@ -16,10 +16,19 @@ const userHiredRepo = AppDataSource.getRepository(UserHired);
 const addressRepo = AppDataSource.getRepository(Address);
 const ServicesRepo = AppDataSource.getRepository(Services);
 
+const getHiredUserService = async (userId: string): Promise<UserHired> => {
+    return await userHiredRepo.findOneBy({ id: userId });
+};
+
+const getAllHiredUsersService = async (): Promise<UserHired[]> => {
+    return await userHiredRepo.find();
+};
+
 const updateUserHiredService = async (body: IRequestUpdateUser, userId: string): Promise<IResponseUpdateUser> => {
-    const updatedUser = userHiredRepo.create({ ...body, id: userId });
-    await userHiredRepo.save(updatedUser);
-    return await updateUserResponseShape.validate(updatedUser, {
+    const userFound = await userHiredRepo.findOneBy({ id: userId });
+    const updatedUser = userHiredRepo.create({ ...userFound, ...body });
+    const newResult = await userHiredRepo.save(updatedUser);
+    return await updateUserResponseShape.validate(newResult, {
         stripUnknown: true,
     });
 };
@@ -29,8 +38,8 @@ const updateAddressUserHiredService = async (
     userId: string
 ): Promise<IResponseUpdateAddress> => {
     const updateAddress = addressRepo.create({ ...body, id: userId });
-    await addressRepo.save(updateAddress);
-    return await updateAddressResponseShape.validate(updateAddress, {
+    const newAddress = await addressRepo.save(updateAddress);
+    return await updateAddressResponseShape.validate(newAddress, {
         stripUnknown: true,
     });
 };
@@ -44,4 +53,4 @@ const deleteUserHiredService = async (userId: string): Promise<DeleteResult> => 
     return await userHiredRepo.softDelete(userId);
 };
 
-export { updateAddressUserHiredService, updateUserHiredService, updateServicesService, deleteUserHiredService };
+export { getHiredUserService, getAllHiredUsersService, updateAddressUserHiredService, updateUserHiredService, updateServicesService, deleteUserHiredService };
