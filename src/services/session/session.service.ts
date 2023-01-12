@@ -3,8 +3,8 @@ import { AppDataSource } from "../../data-source";
 import { UserEmployer } from "../../entities/userEmployer.entity";
 import { UserHired } from "../../entities/userHired.entity";
 import { AppError } from "../../errors";
-import { ILoginRequest } from "../../interface/session.interface";
 import jwt from "jsonwebtoken";
+import { ILoginRequest } from "../../interface";
 
 export const loginService = async ({
   email,
