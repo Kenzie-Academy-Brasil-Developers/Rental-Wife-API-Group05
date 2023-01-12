@@ -4,7 +4,7 @@ import { UserEmployer } from "../entities/userEmployer.entity";
 import { UserHired } from "../entities/userHired.entity";
 import { AppError } from "../errors";
 
-export const verifyUserExists = async (
+export const verifyEmailExists = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,16 +14,16 @@ export const verifyUserExists = async (
 
   const existsEmailHired = await hiredRepo.findOneBy({ email: req.body.email });
   if (existsEmailHired) {
-    return next();
+    throw new AppError("Email already exists", 409);
   }
 
   const existsEmailEmployer = await employerRepo.findOneBy({
-    email: req.params.id,
+    email: req.body.email,
   });
 
   if (existsEmailEmployer) {
-    return next();
+    throw new AppError("Email already exists", 409);
   }
 
-  throw new AppError("User does not exists", 409);
+  return next();
 };

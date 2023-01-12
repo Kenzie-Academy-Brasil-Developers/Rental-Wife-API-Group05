@@ -5,12 +5,12 @@ declare global {
     interface Request {
       user: {
         id: string;
-        name: string;
-        email: string;
-        password: string;
-        isHired: boolean;
-        avatar: string;
-        gender: string;
+        name?: string;
+        email?: string;
+        password?: string;
+        isHired?: boolean;
+        avatar?: string;
+        gender?: string;
       };
       address: {
         street: string;
