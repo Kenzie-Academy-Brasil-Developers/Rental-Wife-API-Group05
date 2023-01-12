@@ -1,10 +1,11 @@
 import { AppDataSource } from "../../data-source";
 import { Proposals } from "../../entities/proposal.entity";
+import { DeleteResult } from "typeorm";
 
 export const deleteProposalService = async (
   proposalId: string
-): Promise<void> => {
+): Promise<DeleteResult> => {
   const proposalRepository = AppDataSource.getRepository(Proposals);
 
-  const proposal = await proposalRepository.findOneBy({ id: proposalId });
+  return await proposalRepository.softDelete(proposalId);
 };

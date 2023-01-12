@@ -1,7 +1,7 @@
-import { IProposalResponse } from "./../../interface/proposals.interface";
 import { AppDataSource } from "../../data-source";
 import { Proposals } from "../../entities/proposal.entity";
 import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { IProposalResponse } from "./../../interface/proposals.interface";
 
 export const getProposalService = async (
   proposalId: string
@@ -13,6 +13,5 @@ export const getProposalService = async (
   const verifiedResponseProposal = proposalResponseShape.validate(proposal, {
     stripUnknown: true,
   });
-
   return verifiedResponseProposal;
 };

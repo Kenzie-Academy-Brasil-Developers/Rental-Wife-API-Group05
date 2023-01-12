@@ -1,10 +1,10 @@
+import { AppDataSource } from "../../data-source";
+import { Proposals } from "../../entities/proposal.entity";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
 import {
   IProposalPostRequest,
   IProposalResponse,
 } from "./../../interface/proposals.interface";
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
 
 export const postProposalService = async (
   data: IProposalPostRequest
@@ -21,6 +21,5 @@ export const postProposalService = async (
   const verifiedResponseProposal = proposalResponseShape.validate(proposal, {
     stripUnknown: true,
   });
-
   return verifiedResponseProposal;
 };

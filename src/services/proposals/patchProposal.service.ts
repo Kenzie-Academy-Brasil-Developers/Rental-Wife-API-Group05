@@ -1,10 +1,10 @@
+import { AppDataSource } from "../../data-source";
+import { Proposals } from "../../entities/proposal.entity";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
 import {
   IProposalResponse,
   IProposalPatchRequest,
 } from "./../../interface/proposals.interface";
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
 
 export const patchProposalService = async (
   proposalId: string,
@@ -12,19 +12,18 @@ export const patchProposalService = async (
 ): Promise<IProposalResponse> => {
   const proposalRepository = AppDataSource.getRepository(Proposals);
 
-  const proposalUpdate = {
+  const proposalPatch = {
     id: proposalId,
     ...updatedBody,
   };
 
-  await proposalRepository.save(proposalUpdate);
+  await proposalRepository.save(proposalPatch);
 
   const verifiedResponseProposal = proposalResponseShape.validate(
-    proposalUpdate,
+    proposalPatch,
     {
       stripUnknown: true,
     }
   );
-
   return verifiedResponseProposal;
 };

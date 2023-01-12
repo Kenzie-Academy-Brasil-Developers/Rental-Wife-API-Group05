@@ -1,4 +1,4 @@
-import { IUser } from "./users.interface";
+import { IEmployer } from "./users.interface";
 export interface IProposalPostRequest {
   title: string;
   description: string;
@@ -10,6 +10,6 @@ export interface IProposalPatchRequest {
 }
 
 export interface IProposalResponse extends IProposalPostRequest {
-  employer: IUser;
-  hired: IUser;
+  employer: IEmployer;
+  hired: IEmployer;
 }

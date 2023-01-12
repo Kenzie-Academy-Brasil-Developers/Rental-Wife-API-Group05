@@ -1,4 +1,4 @@
-import { IUser } from "./../interface/users.interface";
+import { IEmployer } from "./../interface/users.interface";
 import * as yup from "yup";
 import { SchemaOf } from "yup";
 import {
@@ -7,12 +7,31 @@ import {
   IProposalResponse,
 } from "../interface/proposals.interface";
 
+const SchemaAddress = {
+  id: yup.string().required(),
+  street: yup.string().required(),
+  zipCode: yup.string().required(),
+  number: yup.string().required(),
+  city: yup.string().required(),
+  state: yup.string().required(),
+};
+
 const SchemaEmployer = {
+  id: yup.string().required(),
   name: yup.string().required(),
+  email: yup.string().required(),
+  avatar_img: yup.string().required(),
+
+  address: yup.object().shape(SchemaAddress),
 };
 
 const SchemaHired = {
+  id: yup.string().required(),
   name: yup.string().required(),
+  email: yup.string().required(),
+  avatar_img: yup.string().required(),
+
+  address: yup.object().shape(SchemaAddress),
 };
 
 const SchemaRating = {
