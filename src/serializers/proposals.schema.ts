@@ -1,4 +1,3 @@
-import { IEmployer } from "./../interface/users.interface";
 import * as yup from "yup";
 import { SchemaOf } from "yup";
 import {
@@ -36,7 +35,7 @@ const SchemaHired = {
 
 const SchemaRating = {
   id: yup.string().notRequired(),
-  recomendation: yup.string().required(),
+  recommendation: yup.string().required(),
   note: yup.number().required(),
 };
 
@@ -63,7 +62,7 @@ export const proposalResponseShape: SchemaOf<IProposalResponse> = yup
     description: yup.string(),
     status: yup.string(),
 
-    rating: yup.object().shape(SchemaRating),
+    rating: yup.object().shape(SchemaRating).notRequired(),
 
     employer: yup.object().shape(SchemaEmployer),
 
