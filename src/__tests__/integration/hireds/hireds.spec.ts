@@ -45,7 +45,17 @@ describe("/hireds", () => {
   });
 
   it("GET /hireds/:id - Must not be able to get a hired data with a invalid ID.", async () => {
-    const response = await request(app).get(`${baseUrl}/fakeId`);
+    const newHired = await request(app)
+      .post("/register")
+      .send(mockedHiredRegister);
+
+    const hiredLogin = await request(app)
+      .post("/login")
+      .send(mockedUserLoginHired);
+
+    const response = await request(app)
+      .get(`${baseUrl}/fakeId`)
+      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
@@ -84,7 +94,17 @@ describe("/hireds", () => {
   });
 
   it("PATCH /hireds/:id - Must not be able to update a hired data with a invalid ID.", async () => {
-    const response = await request(app).patch(`${baseUrl}/fakeId`);
+    const newHired = await request(app)
+      .post("/register")
+      .send(mockedHiredRegister);
+
+    const hiredLogin = await request(app)
+      .post("/login")
+      .send(mockedUserLoginHired);
+
+    const response = await request(app)
+      .patch(`${baseUrl}/fakeId`)
+      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
@@ -143,7 +163,17 @@ describe("/hireds", () => {
   });
 
   it("DELETE /hireds/:id - Must not be able to delete a hired data with a invalid ID.", async () => {
-    const response = await request(app).delete(`${baseUrl}/fakeId`);
+    const newHired = await request(app)
+      .post("/register")
+      .send(mockedHiredRegister);
+
+    const hiredLogin = await request(app)
+      .post("/login")
+      .send(mockedUserLoginHired);
+
+    const response = await request(app)
+      .delete(`${baseUrl}/fakeId`)
+      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
@@ -170,7 +200,7 @@ describe("/hireds", () => {
     expect(response.status).toBe(401);
   });
 
-  it("DELETE /hireds/:id - Must be able to update a hired data.", async () => {
+  it("DELETE /hireds/:id - Must be able to delete a hired data.", async () => {
     const newHired = await request(app)
       .post("/register")
       .send(mockedHiredRegister);

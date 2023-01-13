@@ -43,7 +43,15 @@ describe("/employers", () => {
   });
 
   it("GET /employers/:id - Must not be able to get a hired data with a invalid ID.", async () => {
-    const response = await request(app).get(`${baseUrl}/fakeId`);
+    const newEmployer = await request(app)
+      .post("/register")
+      .send(mockedEmployerRegister);
+
+    const employerLogin = await request(app).post("/login").send(mockedLogin);
+
+    const response = await request(app)
+      .get(`${baseUrl}/fakeId`)
+      .set("Authorization", `Bearer ${employerLogin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
@@ -79,7 +87,15 @@ describe("/employers", () => {
   });
 
   it("PATCH /employers/:id - Must not be able to update a employer data with a invalid ID.", async () => {
-    const response = await request(app).patch(`${baseUrl}/fakeId`);
+    const newEmployer = await request(app)
+      .post("/register")
+      .send(mockedEmployerRegister);
+
+    const employerLogin = await request(app).post("/login").send(mockedLogin);
+
+    const response = await request(app)
+      .patch(`${baseUrl}/fakeId`)
+      .set("Authorization", `Bearer ${employerLogin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
@@ -134,7 +150,15 @@ describe("/employers", () => {
   });
 
   it("DELETE /employers/:id - Must not be able to delete a employer data with a invalid ID.", async () => {
-    const response = await request(app).delete(`${baseUrl}/fakeId`);
+    const newEmployer = await request(app)
+      .post("/register")
+      .send(mockedEmployerRegister);
+
+    const employerLogin = await request(app).post("/login").send(mockedLogin);
+
+    const response = await request(app)
+      .patch(`${baseUrl}/fakeId`)
+      .set("Authorization", `Bearer ${employerLogin.body.token}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
