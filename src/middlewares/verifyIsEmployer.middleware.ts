@@ -10,10 +10,11 @@ export const verifyIsEmployerMiddleware = async (
 ) => {
   const employerRepo = AppDataSource.getRepository(UserEmployer);
   const loggedUser = await employerRepo.findOneBy({ id: req.user.id });
-
+  console.log(req.user.id, "Chegou ate aqui");
   if (!loggedUser) {
     throw new AppError("Missing employer permission", 401);
   }
   req.user = loggedUser;
+
   return next();
 };

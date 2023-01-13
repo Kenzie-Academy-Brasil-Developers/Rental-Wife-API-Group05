@@ -1,3 +1,4 @@
+import { IRating } from "./../interface/users.interface";
 import { getProposalsEmployerService } from "./../services/proposals/getProposalsEmployer.service";
 import { postProposalService } from "../services/proposals/postProposal.service";
 import { Request, Response } from "express";
@@ -21,6 +22,8 @@ export const getProposalsEmployerController = async (
   req: Request,
   res: Response
 ) => {
+  console.log(" oi");
+
   const data = await getProposalsEmployerService(req.user);
 
   return res.status(200).json(data);
@@ -47,6 +50,7 @@ export const getProposalController = async (req: Request, res: Response) => {
 
 //
 export const postProposalController = async (req: Request, res: Response) => {
+  console.log("Chegou ate aqui", req.user, "Controller");
   const data = await postProposalService(req.body, req.user, req.params.id);
 
   return res.status(200).json(data);
@@ -57,7 +61,7 @@ export const patchProposalEmployerController = async (
   res: Response
 ) => {
   const proposal = req.proposal;
-  const proposalBodyUpdate = req.body;
+  const proposalBodyUpdate: IRating = req.body;
 
   const data = await patchProposalEmployerService(proposal, proposalBodyUpdate);
 
@@ -69,9 +73,8 @@ export const patchProposalHiredController = async (
   res: Response
 ) => {
   const proposal = req.proposal;
-  const proposalBodyUpdate = req.body;
 
-  const data = await patchProposalHiredService(proposal, proposalBodyUpdate);
+  const data = await patchProposalHiredService(proposal);
 
   return res.status(200).json(data);
 };

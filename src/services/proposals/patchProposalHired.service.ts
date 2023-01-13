@@ -1,26 +1,18 @@
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
 import { AppError } from "../../errors";
+import { proposalRepository } from "../../repositories";
 import { proposalResponseShape } from "../../serializers/proposals.schema";
-import {
-  IProposalResponse,
-  IProposalPatchRequest,
-  IProposal,
-} from "./../../interface/proposals.interface";
+import { IProposal } from "./../../interface/proposals.interface";
 
 export const patchProposalHiredService = async (
-  proposal: IProposal,
-  updatedBody: IProposalPatchRequest
-): Promise<IProposalResponse> => {
-  const proposalRepository = AppDataSource.getRepository(Proposals);
-
+  proposal: IProposal
+): Promise<IProposal> => {
   if (proposal.status !== "Enviada") {
     throw new AppError("Missing employer permission", 401);
   }
 
   const proposalPatch = {
     id: proposal.id,
-    status: updatedBody.status,
+    status: "Recusada",
   };
 
   await proposalRepository.save(proposalPatch);

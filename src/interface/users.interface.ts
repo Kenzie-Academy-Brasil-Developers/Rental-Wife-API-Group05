@@ -46,7 +46,7 @@ export interface IEmployer {
 }
 
 export interface IHired extends IEmployer {
-  services?: IService;
+  services?: IService[];
 }
 
 export interface IUserWithoutPass {

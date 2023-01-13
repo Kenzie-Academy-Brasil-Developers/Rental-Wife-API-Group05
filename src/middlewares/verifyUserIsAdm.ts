@@ -17,5 +17,5 @@ export const verifyUserIsAdmMiddleware = async (
     throw new AppError("Missing admin permissions", 403);
   }
 
-  return next;
+  return next();
 };

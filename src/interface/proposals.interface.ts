@@ -1,20 +1,25 @@
-import { IEmployer, IRating } from "./users.interface";
+import { IEmployer, IHired, IRating } from "./users.interface";
 
 export interface IProposalPostRequest {
   title: string;
   description: string;
-  status: string;
 }
 
 export interface IProposal extends IProposalPostRequest {
   id: string;
-}
-export interface IProposalPatchRequest {
+  title: string;
+  description: string;
   status: string;
+  employer?: IEmployer;
+  hired?: IHired;
+  rating?: IRating;
+}
+
+export interface IProposalPatchRequest {
   rating?: IRating;
 }
 
 export interface IProposalResponse extends IProposalPostRequest {
   employer: IEmployer;
-  hired: IEmployer;
+  hired: IHired;
 }

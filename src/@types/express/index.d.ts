@@ -1,3 +1,4 @@
+import { IEmployer, IHired } from "./../../interface/users.interface";
 import * as express from "express";
 
 declare global {
@@ -27,6 +28,9 @@ declare global {
         title: string;
         description: string;
         status: string;
+        employer?: IEmployer;
+        hired?: IHired;
+        ratings?: IRating;
       };
       rating: {
         id: string;

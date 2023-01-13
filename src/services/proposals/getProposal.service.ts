@@ -1,23 +1,21 @@
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
+import { proposalRepository } from "../../repositories";
 import { proposalResponseShape } from "../../serializers/proposals.schema";
-import {
-  IProposal,
-  IProposalResponse,
-} from "./../../interface/proposals.interface";
+import { IProposal } from "./../../interface/proposals.interface";
 
 export const getProposalService = async (
   proposal: IProposal
-): Promise<IProposalResponse> => {
-  const proposalRepository = AppDataSource.getRepository(Proposals);
+): Promise<IProposal> => {
+  const proposalSaved = await proposalRepository.findOne({
+    where: { id: proposal.id },
+    relations: { employer: true, hired: true },
+  });
 
-  const proposalSaved = await proposalRepository.findOneBy({ id: proposal.id });
-
-  const verifiedResponseProposal = proposalResponseShape.validate(
+  const verifiedResponseProposal = await proposalResponseShape.validate(
     proposalSaved,
     {
       stripUnknown: true,
     }
   );
+
   return verifiedResponseProposal;
 };
