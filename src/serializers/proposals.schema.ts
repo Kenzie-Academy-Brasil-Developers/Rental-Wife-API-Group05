@@ -35,7 +35,9 @@ const SchemaHired = {
 };
 
 const SchemaRating = {
-  name: yup.string().required(),
+  id: yup.string().notRequired(),
+  recomendation: yup.string().required(),
+  note: yup.number().required(),
 };
 
 export const createProposalRequestShape: SchemaOf<IProposalPostRequest> = yup
@@ -51,7 +53,7 @@ export const updateProposalRequestShape: SchemaOf<IProposalPatchRequest> = yup
   .shape({
     status: yup.string().required(),
 
-    rating: yup.object().shape(SchemaRating),
+    rating: yup.object().shape(SchemaRating).notRequired(),
   });
 
 export const proposalResponseShape: SchemaOf<IProposalResponse> = yup

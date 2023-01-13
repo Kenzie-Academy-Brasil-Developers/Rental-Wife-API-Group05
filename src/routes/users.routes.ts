@@ -1,76 +1,95 @@
-import { deleteEmployerUser, getEmployerUser, updateAddressUser, updateEmployerUser } from "../controllers/users.controller";
+import {
+  deleteEmployerUserController,
+  getEmployerUserController,
+  updateAddressUserController,
+  updateEmployerUserController,
+} from "../controllers/users.controller";
 import { Router } from "express";
 import {
-    deleteUserHired,
-    updateAddressUserHired,
-    updateUserHired,
-    updateServiceUserHired,
-    getAllHiredUsers,
-    getHiredUser,
+  deleteUserHiredController,
+  updateAddressUserHiredController,
+  updateUserHiredController,
+  updateServiceUserHiredController,
+  getAllHiredUsersController,
+  getHiredUserController,
 } from "../controllers/usersHired.controller";
+import {
+  verifyAuthMiddleware,
+  verifyHiredParamsIdExistsMiddleware,
+  verifyIsEmployerMiddleware,
+  verifyIsHiredMiddleware,
+  validateSchemaMiddleware,
+} from "../middlewares";
 
 export const usersRouter = Router();
 
-usersRouter.get("/hired", 
-    getAllHiredUsers
+usersRouter.get("/hired", getAllHiredUsersController);
+
+usersRouter.get(
+  "/hired/:id",
+  verifyAuthMiddleware, // verificar usuario logado
+  verifyHiredParamsIdExistsMiddleware, // verificar se id do parametro é um hired
+  verifyIsEmployerMiddleware, // verificar se o usuario logado é um employer
+  getHiredUserController
 );
 
-usersRouter.get("/hired/:id", 
-    // verificar usuario logado
-    // verificar se id do parametro é um hired
-    // verificar se o usuario logado é um employer
-    getHiredUser
+usersRouter.patch(
+  "/hired",
+  validateSchemaMiddleware, // validateSchema()
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é hired
+  updateUserHiredController
 );
 
-usersRouter.patch("/hired", 
-    // verificar se o usuario logado
-    // verificar usuario logado é hired
-    // validateSchema()
-    updateUserHired
+usersRouter.delete(
+  "/hired",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é hired
+  deleteUserHiredController
 );
 
-usersRouter.delete("/hired", 
-    // verificar se o usuario logado
-    // verificar usuario logado é hired
-    deleteUserHired
+usersRouter.patch(
+  "/hired/address",
+  validateSchemaMiddleware, // validateSchema()
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é hired
+  updateAddressUserHiredController
 );
 
-usersRouter.patch("/hired/address", 
-    // verificar se o usuario logado
-    // verificar usuario logado é hired
-    // validateSchema()
-    updateAddressUserHired
+usersRouter.patch(
+  "/hired/services",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é hired
+  // verificar se o service existe (FAZER DENTRO DO SERVICE)
+  updateServiceUserHiredController
 );
 
-usersRouter.patch("/hired/services", 
-    // verificar se o usuario logado
-    // verificar usuario logado é hired
-    // verificar se o service existe 
-    updateServiceUserHired
+usersRouter.get(
+  "/employer",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsEmployerMiddleware, // verificar usuario logado é employer
+  getEmployerUserController
 );
 
-usersRouter.get("/employer", 
-    // verificar se o usuario logado
-    // verificar usuario logado é employer
-    getEmployerUser
+usersRouter.patch(
+  "/employer",
+  validateSchemaMiddleware, // validateSchema()
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsEmployerMiddleware, // verificar usuario logado é employer
+  updateEmployerUserController
 );
 
-usersRouter.patch("/employer", 
-    // verificar se o usuario logado
-    // verificar usuario logado é employer
-    // validateSchema()
-    updateEmployerUser
+usersRouter.delete(
+  "/employer",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsEmployerMiddleware, // verificar usuario logado é employer
+  deleteEmployerUserController
 );
 
-usersRouter.delete("/employer", 
-    // verificar se o usuario logado
-    // verificar usuario logado é employer
-    deleteEmployerUser
-);
-
-usersRouter.patch("/employer/address", 
-    // verificar se o usuario logado
-    // verificar usuario logado é employer
-    // validateSchema()
-    updateAddressUser
+usersRouter.patch(
+  "/employer/address",
+  validateSchemaMiddleware, // validateSchema()
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsEmployerMiddleware, // verificar usuario logado é employer
+  updateAddressUserController
 );

@@ -10,7 +10,7 @@ export const postServiceService = async (
   let service = await serviceRepository.findOneBy({ name: userData.name });
 
   if (service) {
-    throw new AppError("Service alredy exist!", 409);
+    throw new AppError("Service already exist!", 409);
   }
 
   service = serviceRepository.create(userData);
