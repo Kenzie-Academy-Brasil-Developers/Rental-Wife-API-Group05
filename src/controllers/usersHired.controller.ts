@@ -22,7 +22,7 @@ export const updateUserHiredController = async (
   req: Request,
   res: Response
 ) => {
-  const data = await updateUserHiredService(req.body, req.params.id);
+  const data = await updateUserHiredService(req);
   return res.status(200).json(data);
 };
 
@@ -30,15 +30,7 @@ export const updateAddressUserHiredController = async (
   req: Request,
   res: Response
 ) => {
-  const data = await updateAddressUserHiredService(req.body, req.params.id);
-  return res.status(200).json(data);
-};
-
-export const updateServiceUserHiredController = async (
-  req: Request,
-  res: Response
-) => {
-  const data = await updateUserHiredService(req.body, req.params.id);
+  const data = await updateAddressUserHiredService(req);
   return res.status(200).json(data);
 };
 
