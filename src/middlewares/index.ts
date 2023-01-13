@@ -1,4 +1,6 @@
-export { verifyEmailExists } from "./verifyEmailExists.middleware";
+export { verifyUserIsAdmMiddleware } from "./verifyUserIsAdm";
+export { verifyUserExistsMiddleware } from "./verifyUserExists.middleware";
+export { verifyEmailExistsMiddleware } from "./verifyEmailExists.middleware";
 export { validateSchemaMiddleware } from "./validateSchema.middleware";
 export { verifyAuthMiddleware } from "./verifyAuth.middleware";
 export { verifyIsEmployerMiddleware } from "./verifyIsEmployer.middleware";
