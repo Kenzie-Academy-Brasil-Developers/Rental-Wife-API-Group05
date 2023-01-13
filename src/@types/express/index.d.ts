@@ -31,7 +31,7 @@ declare global {
       rating: {
         id: string;
         rate: number;
-        comment: string;
+        recommendation: string;
       };
       services: {
         id: string;
