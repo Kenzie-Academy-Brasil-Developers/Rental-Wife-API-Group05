@@ -4,12 +4,13 @@ import {
   validateSchemaMiddleware,
   verifyEmailExistsMiddleware,
 } from "../middlewares";
+import { createUserShape } from "../serializers/register.schema";
 
 export const registerRouter = Router();
 
 registerRouter.post(
   "",
-  validateSchemaMiddleware, //FAZER O SCHEMA
+  validateSchemaMiddleware(createUserShape),
   verifyEmailExistsMiddleware,
   registerUserController
 );
