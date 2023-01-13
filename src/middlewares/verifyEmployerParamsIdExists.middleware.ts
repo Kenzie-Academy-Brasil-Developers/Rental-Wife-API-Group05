@@ -3,7 +3,7 @@ import { AppDataSource } from "../data-source";
 import { UserEmployer } from "../entities/userEmployer.entity";
 import { AppError } from "../errors";
 
-export const verifyHiredParamsIdExistsMiddleware = async (
+export const verifyEmployerParamsIdExistsMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction

@@ -26,4 +26,6 @@ export const patchProposalHiredService = async (
     }
   );
   return verifiedResponseProposal;
+
+  // VERIFICAR SE A PROPOSTA FOI ENCERRADA, CASO ESTEJA ENCERRADA, DISPARAR UM ERROR
 };

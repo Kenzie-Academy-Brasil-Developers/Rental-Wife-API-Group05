@@ -4,7 +4,7 @@ import { UserEmployer } from "../entities/userEmployer.entity";
 import { UserHired } from "../entities/userHired.entity";
 import { AppError } from "../errors";
 
-export const verifyEmailExists = async (
+export const verifyEmailExistsMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IService } from "../interface/services.interface";
 import { deleteServiceService } from "../services/services/deleteService.service";
 import { getAllServicesService } from "../services/services/getAllServices.service";
-import { postServiceService } from "../services/services/services.service";
+import { postServiceService } from "../services/services/postServices.service";
 
 export const postServiceController = async (req: Request, res: Response) => {
   const userData: IService = req.body;
