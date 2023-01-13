@@ -23,7 +23,12 @@ import { verifyEmployerParamsIdExistsMiddleware } from "../middlewares/verifyEmp
 
 export const proposalsRouter = Router();
 
-proposalsRouter.get("", verifyUserIsAdmMiddleware, getProposalsController);
+proposalsRouter.get(
+  "",
+  verifyAuthMiddleware,
+  verifyUserIsAdmMiddleware,
+  getProposalsController
+);
 
 proposalsRouter.get(
   "/:id",
