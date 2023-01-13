@@ -1,9 +1,7 @@
-import {
-  updateAddressUserService,
-  deleteUserEmployerService,
-  updateUserEmployerService,
-} from "../services/users/employer/users.service";
 import { Request, Response } from "express";
+import { updateUserEmployerService } from "../services/users/employer/updateUserEmployerService.service";
+import { updateAddressUserService } from './../services/users/employer/updateAddressUserService.service';
+import { deleteUserEmployerService } from './../services/users/employer/deleteUserEmployerService.service';
 
 export const getEmployerUserController = async (
   req: Request,

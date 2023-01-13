@@ -20,6 +20,7 @@ import {
   verifyIsHiredMiddleware,
   validateSchemaMiddleware,
 } from "../middlewares";
+import { updateAddressResponseShape, updateUserResponseShape } from "../serializers/users.schema";
 
 export const usersRouter = Router();
 
@@ -35,7 +36,7 @@ usersRouter.get(
 
 usersRouter.patch(
   "/hired",
-  validateSchemaMiddleware, // validateSchema()
+  validateSchemaMiddleware(updateUserResponseShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsHiredMiddleware, // verificar usuario logado é hired
   updateUserHiredController
@@ -50,7 +51,7 @@ usersRouter.delete(
 
 usersRouter.patch(
   "/hired/address",
-  validateSchemaMiddleware, // validateSchema()
+  validateSchemaMiddleware(updateAddressResponseShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsHiredMiddleware, // verificar usuario logado é hired
   updateAddressUserHiredController
@@ -73,7 +74,7 @@ usersRouter.get(
 
 usersRouter.patch(
   "/employer",
-  validateSchemaMiddleware, // validateSchema()
+  validateSchemaMiddleware(updateUserResponseShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsEmployerMiddleware, // verificar usuario logado é employer
   updateEmployerUserController
@@ -88,7 +89,7 @@ usersRouter.delete(
 
 usersRouter.patch(
   "/employer/address",
-  validateSchemaMiddleware, // validateSchema()
+  validateSchemaMiddleware(updateAddressResponseShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsEmployerMiddleware, // verificar usuario logado é employer
   updateAddressUserController

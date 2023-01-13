@@ -1,11 +1,9 @@
-import {
-  updateAddressUserHiredService,
-  deleteUserHiredService,
-  updateUserHiredService,
-  getAllHiredUsersService,
-  getHiredUserService,
-} from "../services/users/hired/usersHired.service";
 import { Request, Response } from "express";
+import { deleteUserHiredService } from "../services/users/hired/deleteUserHiredService.service";
+import { getAllHiredUsersService } from "../services/users/hired/getAllHiredUsersService.service";
+import { getHiredUserService } from "../services/users/hired/getHiredUserService.service";
+import { updateAddressUserHiredService } from "../services/users/hired/updateAddressUserHiredService.service";
+import { updateUserHiredService } from "../services/users/hired/updateUserHiredService.service";
 
 export const getAllHiredUsersController = async (
   req: Request,
@@ -24,7 +22,7 @@ export const updateUserHiredController = async (
   req: Request,
   res: Response
 ) => {
-  const data = await updateUserHiredService(req);
+  const data = await updateUserHiredService(req.body, req.params.id);
   return res.status(200).json(data);
 };
 
@@ -40,7 +38,7 @@ export const updateServiceUserHiredController = async (
   req: Request,
   res: Response
 ) => {
-  const data = await updateUserHiredService(req.body);
+  const data = await updateUserHiredService(req.body, req.params.id);
   return res.status(200).json(data);
 };
 
