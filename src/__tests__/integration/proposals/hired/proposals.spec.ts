@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
-import { AppDataSource } from "../../../data-source";
+import { AppDataSource } from "../../../../data-source";
 import request from "supertest";
-import app from "../../../app";
+import app from "../../../../app";
 import {
   mockedEditProposal,
   mockedEmployer2Register,
@@ -13,7 +13,7 @@ import {
   mockedLoginHired2,
   mockedProposal,
   mockedUserLoginHired,
-} from "../../mocks";
+} from "../../../mocks";
 jest.mock("uuid");
 
 describe("/proposals", () => {
