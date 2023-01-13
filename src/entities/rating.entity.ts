@@ -6,7 +6,7 @@ export class Rating {
   id: string;
 
   @Column()
-  recomendation: string;
+  recommendation: string;
 
   @Column()
   note: Number;

@@ -1,3 +1,4 @@
+import { IService } from "./services.interface";
 export interface IRequestUpdateUser {
   name?: string;
   email?: string;
@@ -38,10 +39,14 @@ export interface IRequestUpdateService {
 
 export interface IEmployer {
   id: string;
-  name: string;
-  email: string;
-  avatar_img: string;
-  address?: IAdress | null;
+  name?: string;
+  email?: string;
+  avatar_img?: string;
+  address?: IAddress | null;
+}
+
+export interface IHired extends IEmployer {
+  services?: IService;
 }
 
 export interface IUserWithoutPass {
@@ -50,7 +55,7 @@ export interface IUserWithoutPass {
   email: string;
 }
 
-export interface IAdress {
+export interface IAddress {
   id: string;
   street: string;
   zipCode: string;
@@ -61,6 +66,6 @@ export interface IAdress {
 
 export interface IRating {
   id?: string;
-  recomendation: string; //TEM Q MUDAR O NOME PARA RECOMMENDATION
+  recommendation: string;
   note: number;
 }
