@@ -26,15 +26,8 @@ export const proposalsRouter = Router();
 proposalsRouter.get(
   "",
   verifyAuthMiddleware,
-  verifyUserIsAdmMiddleware,
+  //verifyUserIsAdmMiddleware, // descomentar quando ADM FUNCIONAR
   getProposalsController
-);
-
-proposalsRouter.get(
-  "/:id",
-  verifyAuthMiddleware,
-  verifyProposalsExistsMiddleware,
-  getProposalController
 );
 
 proposalsRouter.post(
@@ -62,15 +55,6 @@ proposalsRouter.get(
   getProposalsHiredController
 );
 
-proposalsRouter.patch(
-  ":id/hired/",
-  validateSchemaMiddleware(updateProposalRequestShape),
-  verifyAuthMiddleware,
-  verifyProposalsExistsMiddleware,
-  verifyIsHiredMiddleware,
-  patchProposalHiredController
-);
-
 //
 
 proposalsRouter.get(
@@ -88,8 +72,19 @@ proposalsRouter.get(
   getProposalsEmployerController
 );
 
+///
+
 proposalsRouter.patch(
-  ":id/employers/",
+  "/:id/hired/",
+  validateSchemaMiddleware(updateProposalRequestShape),
+  verifyAuthMiddleware,
+  verifyProposalsExistsMiddleware,
+  verifyIsHiredMiddleware,
+  patchProposalHiredController
+);
+
+proposalsRouter.patch(
+  "/:id/employers/",
   validateSchemaMiddleware(updateProposalRequestShape),
   verifyAuthMiddleware,
   verifyProposalsExistsMiddleware,
@@ -105,4 +100,11 @@ proposalsRouter.delete(
   verifyProposalsExistsMiddleware,
   verifyIsEmployerMiddleware,
   deleteProposalController
+);
+
+proposalsRouter.get(
+  "/:id",
+  verifyAuthMiddleware,
+  verifyProposalsExistsMiddleware,
+  getProposalController
 );
