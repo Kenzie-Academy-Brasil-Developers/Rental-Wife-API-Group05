@@ -14,7 +14,7 @@ export const registerUserService = async (
     userRepository = AppDataSource.getRepository(UserHired);
   }
 
-  const user = userRepository.create(userData);
+  const user = userRepository.create(userData);  
   await userRepository.save(user);
 
   const returnedUser = await returnCreateUserSerializer.validate(user, {

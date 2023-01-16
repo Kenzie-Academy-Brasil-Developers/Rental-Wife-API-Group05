@@ -7,16 +7,15 @@ export interface IRequestUpdateUser {
   gender?: string;
 }
 
-export interface IResponseUpdateUser {
-  id: string;
-  name: string;
-  email: string;
-  avatar_img: string;
-  gender: string;
-  is_hired: boolean;
+export interface IUpdateUser {
+  name?: string;
+  email?: string;
+  password?: string;
+  avatar_img?: string;
+  gender?: string;
 }
 
-export interface IRequestUpdateAddress {
+export interface IUpdateAddress {
   street?: string;
   zipCode?: string;
   number?: string;
