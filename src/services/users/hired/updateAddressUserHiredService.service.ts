@@ -1,3 +1,4 @@
+import { addressRepo, userHiredRepo } from "../../../repositories";
 import { Request } from "express";
 import { AppDataSource } from "../../../data-source";
 import { Address } from "../../../entities/address.entity";
@@ -17,6 +18,7 @@ export const updateAddressUserHiredService = async (req: Request): Promise<Addre
     }
     const updateAddress = await addressHiredRepo.save(entityAddress);
     const addr = await addressHiredRepo.findOneBy({ id: updateAddress.id });
+    
     await userHiredRepo.update({ id: req.user.id }, { address: addr });
     return updateAddress;
 };
