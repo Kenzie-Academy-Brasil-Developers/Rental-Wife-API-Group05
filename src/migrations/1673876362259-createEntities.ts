@@ -42,5 +42,4 @@ export class createEntities1673876362259 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "rating"`);
         await queryRunner.query(`DROP TABLE "user_admin"`);
     }
-
 }
