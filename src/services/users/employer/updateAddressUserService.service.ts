@@ -1,17 +1,31 @@
-import { IRequestUpdateAddress, IResponseUpdateAddress } from "../../../interface/users.interface";
-import { updateAddressResponseShape } from "../../../serializers/users.schema";
-import { Address } from "../../../entities/address.entity";
-import { AppDataSource } from "../../../data-source";
-
-const addressRepo = AppDataSource.getRepository(Address);
+import { IUpdateAddress } from "../../../interface/users.interface";
+import { addressRepo, userEmployerRepo } from "../../../repositories";
+import { Request } from "express"; 
 
 export const updateAddressUserService = async (
-    body: IRequestUpdateAddress,
-    userId: string
-  ): Promise<IResponseUpdateAddress> => {
-    const updateAddress = addressRepo.create({ ...body, id: userId });
-    const newResult = await addressRepo.save(updateAddress);
-    return await updateAddressResponseShape.validate(newResult, {
-      stripUnknown: true,
-    });
+    req:Request
+  ) => {
+    const userFound = await userEmployerRepo.findOneBy({ id: req.user.id });    
+    // !Resolver tipagem
+    let entityAddress: any;
+
+    if (userFound.address) {
+      entityAddress = addressRepo.create({ ...req.body, id: userFound.address.id });
+    }
+    else {
+      entityAddress = addressRepo.create(req.body);
+    }
+    //!Resolver tipagem
+    const updateAddress: any = await addressRepo.save(entityAddress);
+    const addr = await addressRepo.findOneBy({ id: updateAddress.id });
+    await userEmployerRepo.update({ id: req.user.id }, { address: addr });
+    
+    return await userEmployerRepo.findOne({
+      where: {
+        id: req.user.id,
+      },
+      relations: {
+        address: true
+      }
+    })
 };

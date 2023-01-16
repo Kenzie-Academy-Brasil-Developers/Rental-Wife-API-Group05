@@ -1,16 +1,16 @@
 import { hashSync } from "bcryptjs";
 import {
-  BeforeInsert,
-  BeforeUpdate,
-  Column,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
+    BeforeInsert,
+    BeforeUpdate,
+    Column,
+    DeleteDateColumn,
+    Entity,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
 } from "typeorm";
 import { Address } from "./address.entity";
 import { Proposals } from "./proposal.entity";
@@ -18,47 +18,47 @@ import { Services } from "./services.entity";
 
 @Entity("user_hired")
 export class UserHired {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column()
-  email: string;
+    @Column()
+    email: string;
 
-  @Column()
-  password: string;
+    @Column({ select: false })
+    password: string;
 
-  @Column()
-  is_hired: boolean;
+    @Column()
+    is_hired: boolean;
 
-  @Column()
-  avatar_img: string;
+    @Column()
+    avatar_img: string;
 
-  @Column({ nullable: true })
-  gender: string;
+    @Column({ nullable: true })
+    gender: string;
 
-  @Column({ nullable: true })
-  location: string;
+    @Column({ nullable: true })
+    location: string;
 
-  @DeleteDateColumn()
-  deletedAt?: Date;
+    @DeleteDateColumn()
+    deletedAt?: Date;
 
-  @OneToMany(() => Proposals, (proposals) => proposals.hired)
-  proposals: Proposals[];
+    @OneToMany(() => Proposals, (proposals) => proposals.hired)
+    proposals: Proposals[];
 
-  @ManyToMany(() => Services, (services) => services.usersHired)
-  @JoinTable()
-  services: Services[];
+    @ManyToMany(() => Services, (services) => services.usersHired, { eager: true })
+    @JoinTable()
+    services: Services[];
 
-  @OneToOne(() => Address)
-  @JoinColumn()
-  address: Address;
+    @OneToOne(() => Address, { eager: true })
+    @JoinColumn()
+    address: Address;
 
-  @BeforeUpdate()
-  @BeforeInsert()
-  hashPassword(): void {
-    this.password = hashSync(this.password, 10);
-  }
+    @BeforeUpdate()
+    @BeforeInsert()
+    hashPassword(): void {
+        if (this.password) this.password = hashSync(this.password, 10);
+    }
 }

@@ -1,7 +1,5 @@
-import { AppDataSource } from "../../../data-source";
 import { UserHired } from "../../../entities/userHired.entity";
-
-const userHiredRepo = AppDataSource.getRepository(UserHired);
+import { userHiredRepo } from "../../../repositories";
 
 export const getHiredUserService = async (
     userId: string

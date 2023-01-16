@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteAdminController,
   getAllAdminController,
   postAdminController,
   sessionAdminController,
@@ -20,7 +21,7 @@ adminRoutes.post(
   postAdminController
 );
 adminRoutes.post(
-  "",
+  "/login",
   validateSchemaMiddleware(loginShape),
   sessionAdminController
 );
@@ -29,4 +30,10 @@ adminRoutes.get(
   verifyAuthMiddleware,
   verifyUserIsAdmMiddleware,
   getAllAdminController
+);
+adminRoutes.delete(
+  "/:id",
+  verifyAuthMiddleware,
+  verifyUserIsAdmMiddleware,
+  deleteAdminController
 );

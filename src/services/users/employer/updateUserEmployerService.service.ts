@@ -1,17 +1,14 @@
-import { updateUserResponseShape } from "../../../serializers/users.schema";
-import { IResponseUpdateUser } from "../../../interface/users.interface";
-import { UserEmployer } from "../../../entities/userEmployer.entity";
-import { AppDataSource } from "../../../data-source";
+import { updateUserShape } from "../../../serializers/users.schema";
+import { IUpdateUser } from "../../../interface/users.interface";
 import { Request } from 'express'
-
-const userEmployerRepo = AppDataSource.getRepository(UserEmployer);
+import { userEmployerRepo } from "../../../repositories";
 
 export const updateUserEmployerService = async (
     req: Request
-  ): Promise<IResponseUpdateUser> => {
+  ): Promise<IUpdateUser> => {
     const updatedUser = userEmployerRepo.create({ ...req.user, ...req.body });
     const newResult = await userEmployerRepo.save(updatedUser);
-    return await updateUserResponseShape.validate(newResult, {
+    return await updateUserShape.validate(newResult, {
       stripUnknown: true,
     });
 };
