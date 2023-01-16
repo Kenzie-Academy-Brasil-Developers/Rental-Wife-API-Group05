@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { IAdminPostRequest } from "../interface/admin.interface";
+import { deleteAdminService } from "../services/admin/deleteAdmin.service";
 import { getAllAdminService } from "../services/admin/getAllAdmin.service";
 import { postAdminService } from "../services/admin/postAdmin.service";
 import { sessionAdminService } from "../services/admin/sessionAdmin.service";
@@ -19,4 +20,10 @@ export const sessionAdminController = async (req: Request, res: Response) => {
 export const getAllAdminController = async (req: Request, res: Response) => {
   const data = await getAllAdminService();
   return res.json(data);
+};
+
+export const deleteAdminController = async (req: Request, res: Response) => {
+  const adminId: string = req.params.id;
+  await deleteAdminService(adminId);
+  return res.status(204).json({});
 };
