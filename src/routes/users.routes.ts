@@ -11,6 +11,7 @@ import {
   updateUserHiredController,
   getAllHiredUsersController,
   getHiredUserController,
+  updateServiceUserHiredController,
 } from "../controllers/usersHired.controller";
 import {
   verifyAuthMiddleware,
@@ -56,13 +57,13 @@ usersRouter.patch(
   updateAddressUserHiredController
 );
 
-// usersRouter.patch(
-//   "/hired/services",
-//   verifyAuthMiddleware, // verificar se o usuario logado
-//   verifyIsHiredMiddleware, // verificar usuario logado é hired
-//   // verificar se o service existe (FAZER DENTRO DO SERVICE)
-//   updateServiceUserHiredController
-// );
+usersRouter.patch(
+  "/hired/services",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é hired
+  // verificar se o service existe (FAZER DENTRO DO SERVICE)
+  updateServiceUserHiredController
+);
 
 usersRouter.get(
   "/employer",
