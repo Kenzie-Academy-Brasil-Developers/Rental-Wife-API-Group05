@@ -1,8 +1,6 @@
-import { AppDataSource } from "../../../data-source";
-import { Services } from "../../../entities/services.entity";
 import { IRequestUpdateService } from "../../../interface/users.interface";
-
-const servicesRepo = AppDataSource.getRepository(Services);
+import { Services } from "../../../entities/services.entity";
+import { servicesRepo } from "../../../repositories";
 
 export const updateServicesService = async (
     body: IRequestUpdateService,
