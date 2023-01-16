@@ -15,7 +15,11 @@ export interface IProposal extends IProposalPostRequest {
   rating?: IRating;
 }
 
-export interface IProposalPatchRequest {
+export interface IProposalStatusRequest {
+  status: string;
+}
+
+export interface IProposalRatingRequest {
   rating?: IRating;
 }
 

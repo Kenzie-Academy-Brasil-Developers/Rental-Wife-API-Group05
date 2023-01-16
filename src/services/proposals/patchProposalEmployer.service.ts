@@ -1,8 +1,8 @@
+import { proposalRepository, ratingRepository } from "../../repositories";
+import { IProposal } from "./../../interface/proposals.interface";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
 import { IRating } from "./../../interface/users.interface";
 import { AppError } from "../../errors";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
-import { IProposal } from "./../../interface/proposals.interface";
-import { proposalRepository, ratingRepository } from "../../repositories";
 
 export const patchProposalEmployerService = async (
   proposal: IProposal,
@@ -23,7 +23,7 @@ export const patchProposalEmployerService = async (
     ...proposal,
     employer: proposal.employer,
     hired: proposal.hired,
-    status: "Concluido",
+    status: "Concluída",
     rating: ratingObj,
   };
 

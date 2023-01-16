@@ -1,6 +1,6 @@
 import { proposalRepository } from "../../repositories";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
 import { IProposal } from "./../../interface/proposals.interface";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
 
 export const getProposalService = async (
   proposal: IProposal

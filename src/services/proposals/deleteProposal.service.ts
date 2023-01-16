@@ -1,14 +1,13 @@
-import { DeleteResult } from "typeorm";
-import { AppError } from "../../errors";
-import { IProposal } from "../../interface/proposals.interface";
 import { proposalRepository } from "../../repositories";
+import { IProposal } from "../../interface/proposals.interface";
+import { AppError } from "../../errors";
 
 export const deleteProposalService = async (
   proposal: IProposal
-): Promise<DeleteResult> => {
+): Promise<void> => {
   if (proposal.status !== "Rejeitada") {
     throw new AppError("Missing permissions.", 403);
   }
 
-  return await proposalRepository.softDelete(proposal.id);
+  await proposalRepository.softDelete(proposal.id);
 };
