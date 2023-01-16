@@ -55,7 +55,7 @@ export interface IUserWithoutPass {
 }
 
 export interface IAddress {
-  id: string;
+  id?: string;
   street: string;
   zipCode: string;
   number: string;

@@ -48,7 +48,7 @@ export class UserHired {
     @OneToMany(() => Proposals, (proposals) => proposals.hired)
     proposals: Proposals[];
 
-    @ManyToMany(() => Services, (services) => services.usersHired)
+    @ManyToMany(() => Services, (services) => services.usersHired, { eager: true })
     @JoinTable()
     services: Services[];
 
