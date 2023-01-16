@@ -14,6 +14,8 @@ import {
   IProposal,
   IProposalStatusRequest,
 } from "./../interface/proposals.interface";
+import { getProposalsByIdEmployerService } from "../services/proposals/getProposalsByIdEmployer.service";
+import { getProposalsByIdHiredService } from "../services/proposals/getProposalsByIdHired.service";
 
 export const getProposalsController = async (req: Request, res: Response) => {
   const data: IProposal[] = await getProposalsService();
@@ -32,6 +34,17 @@ export const getProposalsEmployerController = async (
   return res.status(200).json(data);
 };
 
+export const getProposalsByIdEmployerController = async (
+  req: Request,
+  res: Response
+) => {
+  const employerId: string = req.params.id;
+
+  const data: IProposal[] = await getProposalsByIdEmployerService(employerId);
+
+  return res.status(200).json(data);
+};
+
 export const getProposalsHiredController = async (
   req: Request,
   res: Response
@@ -39,6 +52,16 @@ export const getProposalsHiredController = async (
   const userLogged: IHired = req.user;
 
   const data: IProposal[] = await getProposalsHiredService(userLogged);
+
+  return res.status(200).json(data);
+};
+export const getProposalsByIdHiredController = async (
+  req: Request,
+  res: Response
+) => {
+  const hiredId: string = req.params.id;
+
+  const data: IProposal[] = await getProposalsByIdHiredService(hiredId);
 
   return res.status(200).json(data);
 };

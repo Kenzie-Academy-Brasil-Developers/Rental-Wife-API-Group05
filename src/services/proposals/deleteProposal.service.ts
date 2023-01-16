@@ -5,8 +5,8 @@ import { AppError } from "../../errors";
 export const deleteProposalService = async (
   proposal: IProposal
 ): Promise<void> => {
-  if (proposal.status !== "Rejeitada") {
-    throw new AppError("Missing permissions.", 403);
+  if (proposal.status !== "Recusada") {
+    throw new AppError("Cannot delete not rejected proposal", 403);
   }
 
   await proposalRepository.softDelete(proposal.id);

@@ -8,12 +8,12 @@ import {
 } from "../interface/proposals.interface";
 
 const SchemaProposalsAddress = {
-  id: yup.string().required(),
-  street: yup.string().required(),
-  zipCode: yup.string().required(),
-  number: yup.string().required(),
-  city: yup.string().required(),
-  state: yup.string().required(),
+  id: yup.string().notRequired(),
+  street: yup.string().notRequired(),
+  zipCode: yup.string().notRequired(),
+  number: yup.string().notRequired(),
+  city: yup.string().notRequired(),
+  state: yup.string().notRequired(),
 };
 
 const SchemaProposalsServices = {
@@ -25,7 +25,7 @@ const SchemaProposalsEmployer = {
   id: yup.string().required(),
   name: yup.string().required(),
   email: yup.string().required(),
-  avatar_img: yup.string().required(),
+  avatar_img: yup.string().url().required(),
   address: yup.object().shape(SchemaProposalsAddress).required(),
 };
 
@@ -33,8 +33,8 @@ const SchemaProposalsHired = {
   id: yup.string().required(),
   name: yup.string().required(),
   email: yup.string().required(),
-  avatar_img: yup.string().required(),
-  address: yup.object().shape(SchemaProposalsAddress).required(),
+  avatar_img: yup.string().url().required(),
+  address: yup.object().shape(SchemaProposalsAddress).notRequired(),
   services: yup.array(yup.object().shape(SchemaProposalsServices)).required(),
 };
 
@@ -70,7 +70,7 @@ export const proposalResponseShape: SchemaOf<IProposal> = yup.object().shape({
   status: yup.string().required(),
   employer: yup.object().shape(SchemaProposalsEmployer).required(),
   hired: yup.object().shape(SchemaProposalsHired).required(),
-  rating: yup.object().shape(SchemaProposalsRating).notRequired(),
+  rating: yup.object().shape(SchemaProposalsRating).notRequired().nullable(),
 });
 
 export const proposalsResponseShapes = yup.array(proposalResponseShape);

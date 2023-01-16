@@ -1,3 +1,4 @@
+import { userHiredRepo } from "./../../repositories/index";
 import { proposalRepository } from "../../repositories";
 import {
   IProposal,
@@ -5,17 +6,13 @@ import {
 } from "./../../interface/proposals.interface";
 import { proposalResponseShape } from "../../serializers/proposals.schema";
 import { IEmployer } from "./../../interface/users.interface";
-import { UserHired } from "./../../entities/userHired.entity";
-import { AppDataSource } from "../../data-source";
 
 export const postProposalService = async (
   data: IProposalPostRequest,
   employer: IEmployer,
   hiredId: string
 ): Promise<IProposal> => {
-  const hiredRepository = AppDataSource.getRepository(UserHired);
-
-  const hiredUser = await hiredRepository.findOneBy({
+  const hiredUser = await userHiredRepo.findOneBy({
     id: hiredId,
   });
 

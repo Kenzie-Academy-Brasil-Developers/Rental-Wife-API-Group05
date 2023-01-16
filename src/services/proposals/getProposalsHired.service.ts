@@ -8,7 +8,7 @@ export const getProposalsHiredService = async (
 ): Promise<IProposal[]> => {
   const proposals = await proposalRepository.find({
     where: { hired: { id: hired.id } },
-    relations: { hired: true, employer: true },
+    relations: { hired: true, employer: true, rating: true },
   });
 
   const verifiedResponseProposal = proposalsResponseShapes.validate(proposals, {
