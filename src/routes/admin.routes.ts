@@ -20,7 +20,7 @@ adminRoutes.post(
   postAdminController
 );
 adminRoutes.post(
-  "",
+  "/login",
   validateSchemaMiddleware(loginShape),
   sessionAdminController
 );
