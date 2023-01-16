@@ -1,12 +1,12 @@
-import { UserHired } from "./../../entities/userHired.entity";
-import { IEmployer } from "./../../interface/users.interface";
-import { AppDataSource } from "../../data-source";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { proposalRepository } from "../../repositories";
 import {
   IProposal,
   IProposalPostRequest,
 } from "./../../interface/proposals.interface";
-import { proposalRepository } from "../../repositories";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { IEmployer } from "./../../interface/users.interface";
+import { UserHired } from "./../../entities/userHired.entity";
+import { AppDataSource } from "../../data-source";
 
 export const postProposalService = async (
   data: IProposalPostRequest,
@@ -31,7 +31,6 @@ export const postProposalService = async (
 
   const verifiedResponseProposal = proposalResponseShape.validate(proposal, {
     stripUnknown: true,
-    abortEarly: false,
   });
 
   return verifiedResponseProposal;

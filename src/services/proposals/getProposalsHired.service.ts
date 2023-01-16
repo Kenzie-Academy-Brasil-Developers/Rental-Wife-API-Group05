@@ -1,7 +1,7 @@
-import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
-import { IProposal } from "../../interface/proposals.interface";
-import { IHired } from "../../interface/users.interface";
 import { proposalRepository } from "../../repositories";
+import { IProposal } from "../../interface/proposals.interface";
+import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
+import { IHired } from "../../interface/users.interface";
 
 export const getProposalsHiredService = async (
   hired: IHired
@@ -14,5 +14,6 @@ export const getProposalsHiredService = async (
   const verifiedResponseProposal = proposalsResponseShapes.validate(proposals, {
     stripUnknown: true,
   });
+
   return verifiedResponseProposal;
 };

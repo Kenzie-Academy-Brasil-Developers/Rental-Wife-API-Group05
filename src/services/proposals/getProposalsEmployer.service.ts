@@ -1,7 +1,7 @@
-import { IEmployer } from "./../../interface/users.interface";
-import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
-import { IProposal } from "../../interface/proposals.interface";
 import { proposalRepository } from "../../repositories";
+import { IProposal } from "../../interface/proposals.interface";
+import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
+import { IEmployer } from "./../../interface/users.interface";
 
 export const getProposalsEmployerService = async (
   employer: IEmployer

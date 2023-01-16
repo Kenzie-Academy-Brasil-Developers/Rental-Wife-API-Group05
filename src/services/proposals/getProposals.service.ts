@@ -1,6 +1,6 @@
-import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
-import { IProposal } from "../../interface/proposals.interface";
 import { proposalRepository } from "../../repositories";
+import { IProposal } from "../../interface/proposals.interface";
+import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
 
 export const getProposalsService = async (): Promise<IProposal[]> => {
   const proposals = await proposalRepository.find({
@@ -10,5 +10,6 @@ export const getProposalsService = async (): Promise<IProposal[]> => {
   const verifiedResponseProposal = proposalsResponseShapes.validate(proposals, {
     stripUnknown: true,
   });
+
   return verifiedResponseProposal;
 };
