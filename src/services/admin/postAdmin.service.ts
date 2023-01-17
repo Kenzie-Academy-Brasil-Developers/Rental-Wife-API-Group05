@@ -2,10 +2,12 @@ import { AppDataSource } from "../../data-source";
 import { Admin } from "../../entities/admin.entity";
 import { AppError } from "../../errors";
 import { IAdminPostRequest } from "../../interface/admin.interface";
+import { IAdmWithoutPass } from "../../interface/users.interface";
+import { createAdminResponseShape } from "../../serializers/register.schema";
 
 export const postAdminService = async (
   userData: IAdminPostRequest
-): Promise<Admin> => {
+): Promise<IAdmWithoutPass> => {
   const userRepository = AppDataSource.getRepository(Admin);
 
   let user = await userRepository.findOneBy({ email: userData.email });
@@ -17,5 +19,9 @@ export const postAdminService = async (
   user = userRepository.create(userData);
   await userRepository.save(user);
 
-  return user;
+  const returnedAdm = await createAdminResponseShape.validate(user, {
+    stripUnknown: true,
+  });
+
+  return returnedAdm;
 };
