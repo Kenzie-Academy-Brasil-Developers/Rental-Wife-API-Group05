@@ -11,15 +11,14 @@ export const patchProposalHiredService = async (
   statusBody: IProposalStatusRequest
 ): Promise<IProposal> => {
   if (
-    proposal.status !== "Enviada" &&
-    statusBody.status !== "Recusada" &&
-    statusBody.status !== "Em andamento"
+    proposal.status !== "Enviada" ||
+    (statusBody.status !== "Recusada" && statusBody.status !== "Em andamento")
   ) {
     throw new AppError("Missing employer permission", 401);
   }
 
   const proposalPatch = {
-    id: proposal.id,
+    ...proposal,
     status: statusBody.status,
   };
 

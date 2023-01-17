@@ -12,19 +12,19 @@ export const patchProposalEmployerService = async (
     throw new AppError("Missing hired permission", 401);
   }
 
-  const ratingCreated = ratingRepository.create(rating);
-  await ratingRepository.save(ratingCreated);
-
   const ratingObj = rating.recommendation
     ? { note: rating.note, recommendation: rating.recommendation }
     : { note: rating.note, recommendation: "" };
+
+  const ratingCreated = ratingRepository.create(ratingObj);
+  await ratingRepository.save(ratingCreated);
 
   const proposalPatch = {
     ...proposal,
     employer: proposal.employer,
     hired: proposal.hired,
     status: "Concluída",
-    rating: ratingObj,
+    rating: ratingCreated,
   };
 
   await proposalRepository.save(proposalPatch);

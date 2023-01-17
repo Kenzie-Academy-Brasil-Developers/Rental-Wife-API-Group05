@@ -6,6 +6,8 @@ import {
 import {
   deleteProposalController,
   getProposalController,
+  getProposalsByIdEmployerController,
+  getProposalsByIdHiredController,
   getProposalsController,
   getProposalsEmployerController,
   getProposalsHiredController,
@@ -56,7 +58,7 @@ proposalsRouter.get(
   verifyAuthMiddleware,
   verifyHiredParamsIdExistsMiddleware,
   verifyIsEmployerMiddleware,
-  getProposalsHiredController
+  getProposalsByIdHiredController
 );
 
 //
@@ -73,7 +75,7 @@ proposalsRouter.get(
   verifyAuthMiddleware,
   verifyIsEmployerMiddleware,
   verifyEmployerParamsIdExistsMiddleware,
-  getProposalsEmployerController
+  getProposalsByIdEmployerController
 );
 
 ///
