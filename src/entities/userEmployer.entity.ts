@@ -24,7 +24,7 @@ export class UserEmployer {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @Column()
@@ -49,6 +49,6 @@ export class UserEmployer {
   @BeforeUpdate()
   @BeforeInsert()
   hashPassword() {
-    this.password = hashSync(this.password, 10);
+    if (this.password) this.password = hashSync(this.password, 10);
   }
 }

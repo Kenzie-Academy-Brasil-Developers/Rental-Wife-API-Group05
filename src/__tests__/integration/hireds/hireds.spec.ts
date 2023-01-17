@@ -1,9 +1,9 @@
-import { mockedUserLoginHired } from "./../../mocks/integration/login.mock";
 import { mockedHiredRegister } from "./../../mocks/integration/register.mock";
 import request from "supertest";
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
 import app from "../../../app";
+import { mockedLoginHired } from "../../mocks/integration/login.mock";
 
 describe("/hireds", () => {
   let conn: DataSource;
@@ -49,9 +49,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .get(`${baseUrl}/fakeId`)
@@ -66,9 +64,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .get(`${baseUrl}/${newHired.body.id}`)
@@ -98,9 +94,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .patch(`${baseUrl}/fakeId`)
@@ -119,9 +113,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .patch(`${baseUrl}/${newHired_2.body.id}`)
@@ -136,9 +128,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .patch(`${baseUrl}/${newHired.body.id}`)
@@ -167,9 +157,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .delete(`${baseUrl}/fakeId`)
@@ -188,9 +176,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .delete(`${baseUrl}/${newHired_2.body.id}`)
@@ -205,9 +191,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .delete(`${baseUrl}/${newHired.body.id}`)
@@ -228,9 +212,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .get(`${baseUrl}/address`)
@@ -251,9 +233,7 @@ describe("/hireds", () => {
       .post("/register")
       .send(mockedHiredRegister);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
     const response = await request(app)
       .patch(`${baseUrl}/address`)
