@@ -30,7 +30,7 @@ export class UserHired {
   @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ select: false })
   is_hired: boolean;
 
   @Column()
@@ -39,7 +39,7 @@ export class UserHired {
   @Column({ nullable: true })
   gender: string;
 
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deletedAt?: Date;
 
   @OneToMany(() => Proposals, (proposals) => proposals.hired)

@@ -1,7 +1,10 @@
 import * as yup from "yup";
 import { SchemaOf } from "yup";
 import { ILoginRequest, IRegisterRequest } from "../interface";
-import { IUserWithoutPass } from "../interface/users.interface";
+import {
+  IAdmWithoutPass,
+  IUserWithoutPass,
+} from "../interface/users.interface";
 
 export const createUserShape: SchemaOf<IRegisterRequest> = yup.object().shape({
   name: yup.string().required(),
@@ -23,3 +26,10 @@ export const createAdminShape: SchemaOf<ILoginRequest> = yup.object().shape({
   password: yup.string().required(),
   email: yup.string().email().required(),
 });
+
+export const createAdminResponseShape: SchemaOf<IAdmWithoutPass> = yup
+  .object()
+  .shape({
+    id: yup.string(),
+    email: yup.string().email(),
+  });
