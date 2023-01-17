@@ -26,21 +26,21 @@ describe("/login", () => {
     await conn.destroy();
   });
 
-  it("Should be able to login with the user", async () => {
+  it("POST /login - ABLE to login with user email and password.", async () => {
     const response = await request(app).post(baseUrl).send(mockedLogin);
 
     expect(response.body).toHaveProperty("token");
     expect(response.status).toBe(200);
   });
 
-  it("Should not be able to login with the user with incorrect password or email", async () => {
+  it("POST /login - NOT able to login with user incorrect password or email.", async () => {
     const response = await request(app).post(baseUrl).send(mockedWrongLogin);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(403);
   });
 
-  it("Should not find user", async () => {
+  it("POST /login - NOT able to login with non existed.", async () => {
     const response = await request(app)
       .post(baseUrl)
       .send(mockedUserNotExistsLogin);

@@ -1,5 +1,4 @@
 import { Request } from "express";
-import { string } from "yup";
 import { AppDataSource } from "../../../data-source";
 import { Services } from "../../../entities/services.entity";
 import { UserHired } from "../../../entities/userHired.entity";
