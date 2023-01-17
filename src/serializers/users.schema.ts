@@ -1,6 +1,5 @@
 import {
   IUpdateAddress,
-  IUpdateResponseUser,
   IUpdateUser,
   IUserResponse,
 } from "../interface/users.interface";
@@ -14,15 +13,6 @@ export const updateUserShape: SchemaOf<IUpdateUser> = yup.object().shape({
   avatar_img: yup.string(),
   gender: yup.string().nullable(true),
 });
-
-export const updateUserResponseShape: SchemaOf<IUpdateResponseUser> = yup
-  .object()
-  .shape({
-    name: yup.string(),
-    email: yup.string(),
-    avatar_img: yup.string(),
-    gender: yup.string().nullable(true),
-  });
 
 export const updateAddressShape: SchemaOf<IUpdateAddress> = yup.object().shape({
   id: yup.string(),

@@ -17,9 +17,9 @@ export const postProposalService = async (
   });
 
   const proposalCreate = {
+    hired: hiredUser,
     ...data,
     employer: employer,
-    hired: hiredUser,
     status: "Enviada",
   };
 
