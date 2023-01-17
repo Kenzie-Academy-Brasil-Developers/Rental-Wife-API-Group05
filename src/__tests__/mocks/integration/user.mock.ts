@@ -13,3 +13,7 @@ export const mockedUpdateUser = {
 export const mockedUpdateServiceUser = {
   services: ["Hidraulica"],
 };
+
+export const mockedCreateService = {
+  name: "Hidraulica",
+};
