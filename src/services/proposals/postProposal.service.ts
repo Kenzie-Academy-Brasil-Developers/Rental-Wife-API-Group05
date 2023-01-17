@@ -1,21 +1,18 @@
-import { UserHired } from "./../../entities/userHired.entity";
-import { IEmployer } from "./../../interface/users.interface";
-import { AppDataSource } from "../../data-source";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { userHiredRepo } from "./../../repositories/index";
+import { proposalRepository } from "../../repositories";
 import {
   IProposal,
   IProposalPostRequest,
 } from "./../../interface/proposals.interface";
-import { proposalRepository } from "../../repositories";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { IEmployer } from "./../../interface/users.interface";
 
 export const postProposalService = async (
   data: IProposalPostRequest,
   employer: IEmployer,
   hiredId: string
 ): Promise<IProposal> => {
-  const hiredRepository = AppDataSource.getRepository(UserHired);
-
-  const hiredUser = await hiredRepository.findOneBy({
+  const hiredUser = await userHiredRepo.findOneBy({
     id: hiredId,
   });
 
@@ -31,7 +28,6 @@ export const postProposalService = async (
 
   const verifiedResponseProposal = proposalResponseShape.validate(proposal, {
     stripUnknown: true,
-    abortEarly: false,
   });
 
   return verifiedResponseProposal;

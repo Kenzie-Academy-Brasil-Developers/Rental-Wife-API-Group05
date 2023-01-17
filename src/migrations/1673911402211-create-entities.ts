@@ -1,15 +1,15 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class createEntities1673876362259 implements MigrationInterface {
-    name = 'createEntities1673876362259'
+export class createEntities1673911402211 implements MigrationInterface {
+    name = 'createEntities1673911402211'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`CREATE TABLE "address" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "street" character varying NOT NULL, "zipCode" character varying NOT NULL, "number" character varying NOT NULL, "city" character varying NOT NULL, "state" character varying NOT NULL, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "user_admin" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "email" character varying NOT NULL, "password" character varying NOT NULL, CONSTRAINT "PK_c143511e72fac735b8006051e55" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "rating" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "recommendation" character varying NOT NULL, "note" integer NOT NULL, CONSTRAINT "PK_ecda8ad32645327e4765b43649e" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "address" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "street" character varying NOT NULL, "zipCode" character varying NOT NULL, "number" character varying NOT NULL, "city" character varying NOT NULL, "state" character varying NOT NULL, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "user_employer" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "is_hired" boolean NOT NULL, "avatar_img" character varying NOT NULL, "gender" character varying, "location" character varying, "deletedAt" TIMESTAMP, "addressId" uuid, CONSTRAINT "REL_65f0cb54567ad8ed59a3bacb98" UNIQUE ("addressId"), CONSTRAINT "PK_3f4b66f3b18d4c8d5bd4ff41b2e" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "user_employer" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "is_hired" boolean NOT NULL, "avatar_img" character varying NOT NULL, "gender" character varying, "deletedAt" TIMESTAMP, "addressId" uuid, CONSTRAINT "REL_65f0cb54567ad8ed59a3bacb98" UNIQUE ("addressId"), CONSTRAINT "PK_3f4b66f3b18d4c8d5bd4ff41b2e" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "services" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, CONSTRAINT "PK_ba2d347a3168a296416c6c5ccb2" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "user_hired" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "is_hired" boolean NOT NULL, "avatar_img" character varying NOT NULL, "gender" character varying, "location" character varying, "deletedAt" TIMESTAMP, "addressId" uuid, CONSTRAINT "REL_8cad5d8c19d83e5f6997272c2c" UNIQUE ("addressId"), CONSTRAINT "PK_c152c63a5d9dee96c681992d539" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "user_hired" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "is_hired" boolean NOT NULL, "avatar_img" character varying NOT NULL, "gender" character varying, "deletedAt" TIMESTAMP, "addressId" uuid, CONSTRAINT "REL_8cad5d8c19d83e5f6997272c2c" UNIQUE ("addressId"), CONSTRAINT "PK_c152c63a5d9dee96c681992d539" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "employer_proposal_hired" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying NOT NULL, "description" character varying NOT NULL, "status" character varying NOT NULL, "deletedAt" TIMESTAMP, "employerId" uuid, "hiredId" uuid, "ratingId" uuid, CONSTRAINT "REL_26052233e9db13f4c826790944" UNIQUE ("ratingId"), CONSTRAINT "PK_639510d0f500e0c7a96d5d2455b" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "user_hired_services_services" ("userHiredId" uuid NOT NULL, "servicesId" uuid NOT NULL, CONSTRAINT "PK_a52a5f7e10dc89fee063a36f750" PRIMARY KEY ("userHiredId", "servicesId"))`);
         await queryRunner.query(`CREATE INDEX "IDX_c8dd583a73e7961ee31836b586" ON "user_hired_services_services" ("userHiredId") `);
@@ -38,8 +38,9 @@ export class createEntities1673876362259 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "user_hired"`);
         await queryRunner.query(`DROP TABLE "services"`);
         await queryRunner.query(`DROP TABLE "user_employer"`);
-        await queryRunner.query(`DROP TABLE "address"`);
         await queryRunner.query(`DROP TABLE "rating"`);
         await queryRunner.query(`DROP TABLE "user_admin"`);
+        await queryRunner.query(`DROP TABLE "address"`);
     }
+
 }

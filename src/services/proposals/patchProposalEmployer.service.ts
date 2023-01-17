@@ -1,8 +1,8 @@
+import { proposalRepository, ratingRepository } from "../../repositories";
+import { IProposal } from "./../../interface/proposals.interface";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
 import { IRating } from "./../../interface/users.interface";
 import { AppError } from "../../errors";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
-import { IProposal } from "./../../interface/proposals.interface";
-import { proposalRepository, ratingRepository } from "../../repositories";
 
 export const patchProposalEmployerService = async (
   proposal: IProposal,
@@ -12,19 +12,19 @@ export const patchProposalEmployerService = async (
     throw new AppError("Missing hired permission", 401);
   }
 
-  const ratingCreated = ratingRepository.create(rating);
-  await ratingRepository.save(ratingCreated);
-
   const ratingObj = rating.recommendation
     ? { note: rating.note, recommendation: rating.recommendation }
     : { note: rating.note, recommendation: "" };
+
+  const ratingCreated = ratingRepository.create(ratingObj);
+  await ratingRepository.save(ratingCreated);
 
   const proposalPatch = {
     ...proposal,
     employer: proposal.employer,
     hired: proposal.hired,
-    status: "Concluido",
-    rating: ratingObj,
+    status: "Concluída",
+    rating: ratingCreated,
   };
 
   await proposalRepository.save(proposalPatch);

@@ -1,18 +1,25 @@
-import { AppError } from "../../errors";
 import { proposalRepository } from "../../repositories";
+import {
+  IProposal,
+  IProposalStatusRequest,
+} from "./../../interface/proposals.interface";
 import { proposalResponseShape } from "../../serializers/proposals.schema";
-import { IProposal } from "./../../interface/proposals.interface";
+import { AppError } from "../../errors";
 
 export const patchProposalHiredService = async (
-  proposal: IProposal
+  proposal: IProposal,
+  statusBody: IProposalStatusRequest
 ): Promise<IProposal> => {
-  if (proposal.status !== "Enviada") {
+  if (
+    proposal.status !== "Enviada" ||
+    (statusBody.status !== "Recusada" && statusBody.status !== "Em andamento")
+  ) {
     throw new AppError("Missing employer permission", 401);
   }
 
   const proposalPatch = {
-    id: proposal.id,
-    status: "Recusada",
+    ...proposal,
+    status: statusBody.status,
   };
 
   await proposalRepository.save(proposalPatch);
@@ -25,7 +32,3 @@ export const patchProposalHiredService = async (
   );
   return verifiedResponseProposal;
 };
-
-// VERIFICAR SE A PROPOSTA FOI ENCERRADA, CASO ESTEJA ENCERRADA, DISPARAR UM ERROR
-
-// Status = ["Enviada", "Rejeitada", "Em andamento", "Concluída"];

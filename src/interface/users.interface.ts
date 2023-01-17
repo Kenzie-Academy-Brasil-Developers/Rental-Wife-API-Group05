@@ -1,3 +1,4 @@
+import { string } from "yup";
 import { IService } from "./services.interface";
 export interface IRequestUpdateUser {
   name?: string;
@@ -15,7 +16,15 @@ export interface IUpdateUser {
   gender?: string;
 }
 
+export interface IUpdateResponseUser {
+  name?: string;
+  email?: string;
+  avatar_img?: string;
+  gender?: string;
+}
+
 export interface IUpdateAddress {
+  id?: string;
   street?: string;
   zipCode?: string;
   number?: string;
@@ -54,8 +63,13 @@ export interface IUserWithoutPass {
   email: string;
 }
 
-export interface IAddress {
+export interface IAdmWithoutPass {
   id: string;
+  email: string;
+}
+
+export interface IAddress {
+  id?: string;
   street: string;
   zipCode: string;
   number: string;
@@ -67,4 +81,13 @@ export interface IRating {
   id?: string;
   recommendation: string;
   note: number;
+}
+
+export interface IUserResponse {
+  id: string;
+  name: string;
+  email: string;
+  avatar_img: string;
+  gender: string;
+  address: IAddress;
 }

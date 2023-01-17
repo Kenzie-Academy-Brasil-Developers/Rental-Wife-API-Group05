@@ -1,13 +1,13 @@
 import { proposalRepository } from "../../repositories";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
 import { IProposal } from "./../../interface/proposals.interface";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
 
 export const getProposalService = async (
   proposal: IProposal
 ): Promise<IProposal> => {
   const proposalSaved = await proposalRepository.findOne({
     where: { id: proposal.id },
-    relations: { employer: true, hired: true },
+    relations: { employer: true, hired: true, rating: true },
   });
 
   const verifiedResponseProposal = await proposalResponseShape.validate(

@@ -1,14 +1,13 @@
 import { proposalRepository } from "../../repositories";
 import { IProposal } from "../../interface/proposals.interface";
 import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
-import { IEmployer } from "./../../interface/users.interface";
 
-export const getProposalsEmployerService = async (
-  employer: IEmployer
+export const getProposalsByIdHiredService = async (
+  hiredId: string
 ): Promise<IProposal[]> => {
   const proposals = await proposalRepository.find({
-    where: { employer: { id: employer.id } },
-    relations: { employer: true, hired: true, rating: true },
+    where: { hired: { id: hiredId } },
+    relations: { hired: true, employer: true, rating: true },
   });
 
   const verifiedResponseProposal = proposalsResponseShapes.validate(proposals, {
