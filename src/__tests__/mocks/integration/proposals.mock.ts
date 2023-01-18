@@ -15,6 +15,5 @@ export const mockedProposalDone = {
   rating: {
     recommendation: "Muito bom o serviço.",
     note: 5
-  },
-  status: "Concluída"
+  }
 }

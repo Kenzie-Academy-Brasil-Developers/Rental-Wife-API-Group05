@@ -10,4 +10,6 @@ export const deleteProposalService = async (
   }
 
   await proposalRepository.softDelete(proposal.id);
+
+  return;
 };

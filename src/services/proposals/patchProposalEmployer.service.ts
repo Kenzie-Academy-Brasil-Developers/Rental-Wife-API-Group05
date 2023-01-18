@@ -29,11 +29,12 @@ export const patchProposalEmployerService = async (
 
   await proposalRepository.save(proposalPatch);
 
-  const verifiedResponseProposal = proposalResponseShape.validate(
+  const verifiedResponseProposal = await proposalResponseShape.validate(
     proposalPatch,
     {
       stripUnknown: true,
     }
   );
+
   return verifiedResponseProposal;
 };
