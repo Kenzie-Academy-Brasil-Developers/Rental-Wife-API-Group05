@@ -1,31 +1,26 @@
 import { ILoginRequest } from "../../../interface/session.interface";
 
-export const mockedLogin: ILoginRequest = {
-  email: "email@mail.com",
+export const mockedLoginEmployer: ILoginRequest = {
+  email: "employer@mail.com",
   password: "123456",
 };
 
-export const mockedWrongLogin: ILoginRequest = {
-  email: "email@mail.com",
-  password: "teste123",
+export const mockedLoginHired: ILoginRequest = {
+  email: "hired@mail.com",
+  password: "123456",
 };
 
-export const mockedUserNotExistsLogin: ILoginRequest = {
-  email: "email@mail.com",
-  password: "teste123",
+export const mockedLoginEmployer_2: ILoginRequest = {
+  email: "employer_2@mail.com",
+  password: "123456",
 };
 
-export const mockedUserLoginHired: ILoginRequest = {
-  email: "emailHired@mail.com",   
-  password: "123456"
-}
-
-export const mockedLoginEmployer2: ILoginRequest = {
- email: "email2Employer@mail.com",
- password: "123456",
+export const mockedLoginHired_2: ILoginRequest = {
+  email: "hired_2@mail.com",
+  password: "123456",
 };
 
-export const mockedLoginHired2: ILoginRequest = {
- email: "email2Hired@mail.com",
- password: "123456",
+export const mockedLoginAdmin: ILoginRequest = {
+  email: "adm@mail.com",
+  password: "123456",
 };

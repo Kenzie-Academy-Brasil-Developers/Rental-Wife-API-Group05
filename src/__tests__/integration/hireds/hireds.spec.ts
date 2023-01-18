@@ -1,13 +1,27 @@
-import { mockedUserLoginHired } from "./../../mocks/integration/login.mock";
-import { mockedHiredRegister } from "./../../mocks/integration/register.mock";
-import request from "supertest";
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
+import request from "supertest";
 import app from "../../../app";
+import {
+  mockedAdminRegister,
+  mockedEmployerRegister,
+  mockedHiredRegister,
+} from "../../mocks/integration/register.mock";
+import {
+  mockedCreateService,
+  mockedUpdateAddress,
+  mockedUpdateUser,
+  mockedUpdateServiceUser,
+} from "../../mocks/integration/user.mock";
+import {
+  mockedLoginAdmin,
+  mockedLoginEmployer,
+  mockedLoginHired,
+} from "../../mocks/integration/login.mock";
 
 describe("/hireds", () => {
   let conn: DataSource;
-  const baseUrl = "/hireds";
+  const baseUrl = "/users/hired";
 
   beforeAll(async () => {
     await AppDataSource.initialize()
@@ -15,250 +29,318 @@ describe("/hireds", () => {
       .catch((err) => {
         console.error("Error during Data Source initialization.", err);
       });
+    await request(app).post("/register").send(mockedHiredRegister);
+    await request(app).post("/register").send(mockedEmployerRegister);
+    await request(app).post("/admin").send(mockedAdminRegister);
+    const admin = await request(app)
+      .post("/admin/login")
+      .send(mockedLoginAdmin);
+    const token = `Bearer ${admin.body.token}`;
+    await request(app)
+      .post("/services")
+      .send(mockedCreateService)
+      .set("Authorization", token);
   });
 
   afterAll(async () => {
     await conn.destroy();
   });
 
-  it("GET /hireds - Must be able to list all hired users.", async () => {
+  // LISTAR TODOS OS USUARIOS HIRED
+
+  it("GET /hired/all - Able to list all hired users.", async () => {
+    const response = await request(app).get(`${baseUrl}/all`);
+
+    expect(response.body).toHaveLength(1);
+    expect(response.status).toBe(200);
+  });
+
+  // LISTAR O USUARIO HIRED LOGADO
+
+  it("GET /hired - Not be able to list a hired user logged without authentication.", async () => {
     const response = await request(app).get(baseUrl);
 
-    expect(response.body.length).toBeGreaterThanOrEqual(1);
-    expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("name");
-    expect(response.body.name).toEqual("name");
-    expect(response.body).toHaveProperty("email");
-    expect(response.body.name).toEqual("email@email.com");
-    expect(response.body).not.toHaveProperty("password");
-    expect(response.body).toHaveProperty("avatar_img");
-    expect(response.body).toHaveProperty("address");
-    expect(response.body).toHaveProperty("services");
-    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
   });
 
-  it("GET /hireds/:id - Must not be able to get a hired data without authentication.", async () => {
-    const response = await request(app).get(`${baseUrl}/fakeId`);
+  it("GET /hired - Not be able to list a hired user if logged not a hired.", async () => {
+    const employerLogin = await request(app)
+      .post("/login")
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
+
+    const response = await request(app)
+      .get(baseUrl)
+      .set("Authorization", token);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  it("GET /hireds/:id - Must not be able to get a hired data with a invalid ID.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
+  it("GET /hired - Able to list a hired user logged.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const token = `Bearer ${hiredLogin.body.token}`;
 
     const response = await request(app)
-      .get(`${baseUrl}/fakeId`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(404);
-  });
-
-  it("GET /hireds/:id - Must be able to get a hired data.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
-
-    const response = await request(app)
-      .get(`${baseUrl}/${newHired.body.id}`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
-
-    expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("name");
-    expect(response.body.name).toEqual("name");
-    expect(response.body).toHaveProperty("email");
-    expect(response.body.name).toEqual("email@email.com");
-    expect(response.body).not.toHaveProperty("password");
-    expect(response.body).toHaveProperty("avatar_img");
-    expect(response.body).toHaveProperty("address");
-    expect(response.body).toHaveProperty("services");
-    expect(response.status).toBe(200);
-  });
-
-  it("PATCH /hireds/:id - Must not be able to update a hired data without authentication.", async () => {
-    const response = await request(app).patch(`${baseUrl}/fakeId`);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
-  });
-
-  it("PATCH /hireds/:id - Must not be able to update a hired data with a invalid ID.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
-
-    const response = await request(app)
-      .patch(`${baseUrl}/fakeId`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(404);
-  });
-
-  it("PATCH /hireds/:id - Must not be able to update a hired data different from your own.", async () => {
-    const newHired_1 = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const newHired_2 = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
-
-    const response = await request(app)
-      .patch(`${baseUrl}/${newHired_2.body.id}`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
-  });
-
-  it("PATCH /hireds/:id - Must be able to update a hired data.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
-
-    const response = await request(app)
-      .patch(`${baseUrl}/${newHired.body.id}`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
+      .get(baseUrl)
+      .set("Authorization", token);
 
     expect(response.body).toHaveProperty("gender");
     expect(response.body).toHaveProperty("avatar_img");
     expect(response.body).toHaveProperty("email");
     expect(response.body).toHaveProperty("name");
-    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("address");
     expect(response.body).not.toHaveProperty("password");
-    expect(response.body).not.toHaveProperty("address");
-    expect(response.body).not.toHaveProperty("services");
     expect(response.status).toBe(200);
   });
 
-  it("DELETE /hireds/:id - Must not be able to delete a hired data without authentication.", async () => {
-    const response = await request(app).delete(`${baseUrl}/fakeId`);
+  // LISTAR O USUARIO HIRED PASSADO PELO PARAMS IDs
+
+  it("GET /hired/:id - Not be able to list a hired user without authentication.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const user = await request(app).get(baseUrl).set("Authorization", token);
+
+    const response = await request(app).get(`${baseUrl}/${user.body.id}`);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  it("DELETE /hireds/:id - Must not be able to delete a hired data with a invalid ID.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
+  it("GET /hired/:id - Not be able to list a hired if params id do not exists.", async () => {
+    const employerLogin = await request(app)
       .post("/login")
-      .send(mockedUserLoginHired);
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
 
     const response = await request(app)
-      .delete(`${baseUrl}/fakeId`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
+      .get(`${baseUrl}/naoexiste`)
+      .set("Authorization", token);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(404);
   });
 
-  it("DELETE /hireds/:id - Must not be able to delete a hired data different from your own.", async () => {
-    const newHired_1 = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
+  it("GET /hired/:id - Not be able to list a hired user if logged not a employer.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
 
-    const newHired_2 = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
+    const token = `Bearer ${hiredLogin.body.token}`;
 
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
+    const userHired = await request(app)
+      .get(baseUrl)
+      .set("Authorization", token);
 
     const response = await request(app)
-      .delete(`${baseUrl}/${newHired_2.body.id}`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
+      .get(`${baseUrl}/${userHired.body.id}`)
+      .set("Authorization", token);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  it("DELETE /hireds/:id - Must be able to delete a hired data.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
+  it("GET /hired/:id - Able to list a hired user.", async () => {
+    const employerLogin = await request(app)
       .post("/login")
-      .send(mockedUserLoginHired);
+      .send(mockedLoginEmployer);
+    const token = `Bearer ${employerLogin.body.token}`;
 
-    const response = await request(app)
-      .delete(`${baseUrl}/${newHired.body.id}`)
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+    const userHired = await request(app)
+      .get(baseUrl)
       .set("Authorization", `Bearer ${hiredLogin.body.token}`);
 
-    expect(response.status).toBe(204);
-  });
-
-  it("GET /hireds/address - Must not be able to get a hired address without authentication.", async () => {
-    const response = await request(app).get(`${baseUrl}/address`);
-
-    expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(401);
-  });
-
-  it("GET /hireds/address - Must be able to get a hired address.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
-      .post("/login")
-      .send(mockedUserLoginHired);
-
     const response = await request(app)
-      .get(`${baseUrl}/address`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
+      .get(`${baseUrl}/${userHired.body.id}`)
+      .set("Authorization", token);
 
+    expect(response.body).toHaveProperty("gender");
+    expect(response.body).toHaveProperty("avatar_img");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body).toHaveProperty("address");
+    expect(response.body).not.toHaveProperty("password");
     expect(response.status).toBe(200);
   });
 
-  it("PATCH /hireds/address - Must not be able to update a hired address without authentication.", async () => {
-    const response = await request(app).patch(`${baseUrl}/address`);
+  // EDITAR DADOS DO USUARIO HIRED
+
+  it("PATCH /hired - Not be able to update user without authentication", async () => {
+    const response = await request(app)
+      .patch(baseUrl)
+      .send(mockedUpdateAddress);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  it("PATCH /hireds/address - Must be able to update a hired address.", async () => {
-    const newHired = await request(app)
-      .post("/register")
-      .send(mockedHiredRegister);
-
-    const hiredLogin = await request(app)
+  it("PATCH /hired - Not be able to update user if not being hired", async () => {
+    const employerLogin = await request(app)
       .post("/login")
-      .send(mockedUserLoginHired);
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
+
+    const response = await request(app)
+      .patch(baseUrl)
+      .set("Authorization", token)
+      .send(mockedUpdateAddress);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("PATCH /hired - Able to update a employer data.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const response = await request(app)
+      .patch(baseUrl)
+      .set("Authorization", token)
+      .send(mockedUpdateUser);
+
+    expect(response.body).toHaveProperty("gender");
+    expect(response.body).toHaveProperty("avatar_img");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body).not.toHaveProperty("password");
+    expect(response.body).not.toHaveProperty("address");
+    expect(response.status).toBe(200);
+  });
+
+  // EDITAR ENDEREÇO DO USUARIO HIRED
+
+  it("PATCH /hired/address - Not be able to update user's address without authentication", async () => {
+    const response = await request(app)
+      .patch(`${baseUrl}/address`)
+      .send(mockedUpdateAddress);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("PATCH /hired/address - Not be able to update user if not being hired", async () => {
+    const employerLogin = await request(app)
+      .post("/login")
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
 
     const response = await request(app)
       .patch(`${baseUrl}/address`)
-      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
+      .set("Authorization", token)
+      .send(mockedUpdateAddress);
 
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("PATCH /hired/address - Able to update a hired data.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const response = await request(app)
+      .patch(`${baseUrl}/address`)
+      .set("Authorization", token)
+      .send(mockedUpdateAddress);
+
+    expect(response.body).toHaveProperty("gender");
+    expect(response.body).toHaveProperty("avatar_img");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body).toHaveProperty("address");
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).not.toHaveProperty("password");
     expect(response.status).toBe(200);
+  });
+
+  // EDITAR SERVIÇOS DO USUARIO HIRED
+
+  it("PATCH /hired/services - Not be able to update user's services without authentication", async () => {
+    const response = await request(app)
+      .patch(`${baseUrl}/services`)
+      .send(mockedUpdateAddress);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("PATCH /hired/services - Not be able to update user if not being hired", async () => {
+    const employerLogin = await request(app)
+      .post("/login")
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
+
+    const response = await request(app)
+      .patch(`${baseUrl}/services`)
+      .set("Authorization", token)
+      .send(mockedUpdateServiceUser);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("PATCH /hired/services - Able to update user's services", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const response = await request(app)
+      .patch(`${baseUrl}/services`)
+      .set("Authorization", token)
+      .send(mockedUpdateServiceUser);
+
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body).toHaveProperty("avatar_img");
+    expect(response.body).toHaveProperty("gender");
+    expect(response.body).toHaveProperty("services");
+    expect(response.body).toHaveProperty("address");
+    expect(response.status).toBe(200);
+  });
+
+  // DELETAR O USUARIO HIRED
+
+  it("DELETE /hired - Not be able to delete user without authentication", async () => {
+    const response = await request(app).delete(baseUrl);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("DELETE /hired - Not be able to delete user if not being hired", async () => {
+    const employerLogin = await request(app)
+      .post("/login")
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
+
+    const response = await request(app)
+      .delete(baseUrl)
+      .set("Authorization", token);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("DELETE /hired - Able to delete user", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const response = await request(app)
+      .delete(baseUrl)
+      .set("Authorization", token);
+
+    expect(response.status).toBe(204);
   });
 });

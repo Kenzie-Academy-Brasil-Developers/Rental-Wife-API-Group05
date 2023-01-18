@@ -1,8 +1,5 @@
-import { UserHired } from "../../../entities/userHired.entity";
-import { AppDataSource } from "../../../data-source";
+import { userHiredRepo } from "../../../repositories";
 import { DeleteResult } from "typeorm";
-
-const userHiredRepo = AppDataSource.getRepository(UserHired);
 
 export const deleteUserHiredService = async (
     userId: string

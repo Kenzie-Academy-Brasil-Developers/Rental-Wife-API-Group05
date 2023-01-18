@@ -1,17 +1,15 @@
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
-import { DeleteResult } from "typeorm";
+import { proposalRepository } from "../../repositories";
+import { IProposal } from "../../interface/proposals.interface";
 import { AppError } from "../../errors";
 
 export const deleteProposalService = async (
-  proposalId: string,
-  isHired: boolean
-): Promise<DeleteResult> => {
-  const proposalRepository = AppDataSource.getRepository(Proposals);
-
-  if (isHired === true) {
-    throw new AppError("Missing permissions.", 403);
+  proposal: IProposal
+): Promise<void> => {
+  if (proposal.status !== "Recusada") {
+    throw new AppError("Cannot delete not rejected proposal", 403);
   }
 
-  return await proposalRepository.softDelete(proposalId);
+  await proposalRepository.softDelete(proposal.id);
+
+  return;
 };

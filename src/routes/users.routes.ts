@@ -9,8 +9,9 @@ import {
   deleteUserHiredController,
   updateAddressUserHiredController,
   updateUserHiredController,
-  updateServiceUserHiredController,
   getAllHiredUsersController,
+  retrieveHiredUserController,
+  updateServiceUserHiredController,
   getHiredUserController,
 } from "../controllers/usersHired.controller";
 import {
@@ -20,23 +21,33 @@ import {
   verifyIsHiredMiddleware,
   validateSchemaMiddleware,
 } from "../middlewares";
-import { updateAddressResponseShape, updateUserResponseShape } from "../serializers/users.schema";
+import {
+  updateAddressShape,
+  updateUserShape,
+} from "../serializers/users.schema";
 
 export const usersRouter = Router();
 
-usersRouter.get("/hired", getAllHiredUsersController);
+usersRouter.get("/hired/all", getAllHiredUsersController);
+
+usersRouter.get(
+  "/hired",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é employer
+  getHiredUserController
+);
 
 usersRouter.get(
   "/hired/:id",
   verifyAuthMiddleware, // verificar usuario logado
   verifyHiredParamsIdExistsMiddleware, // verificar se id do parametro é um hired
   verifyIsEmployerMiddleware, // verificar se o usuario logado é um employer
-  getHiredUserController
+  retrieveHiredUserController
 );
 
 usersRouter.patch(
   "/hired",
-  validateSchemaMiddleware(updateUserResponseShape), // validateSchema()
+  validateSchemaMiddleware(updateUserShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsHiredMiddleware, // verificar usuario logado é hired
   updateUserHiredController
@@ -51,7 +62,7 @@ usersRouter.delete(
 
 usersRouter.patch(
   "/hired/address",
-  validateSchemaMiddleware(updateAddressResponseShape), // validateSchema()
+  validateSchemaMiddleware(updateAddressShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsHiredMiddleware, // verificar usuario logado é hired
   updateAddressUserHiredController
@@ -61,7 +72,6 @@ usersRouter.patch(
   "/hired/services",
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsHiredMiddleware, // verificar usuario logado é hired
-  // verificar se o service existe (FAZER DENTRO DO SERVICE)
   updateServiceUserHiredController
 );
 
@@ -74,7 +84,7 @@ usersRouter.get(
 
 usersRouter.patch(
   "/employer",
-  validateSchemaMiddleware(updateUserResponseShape), // validateSchema()
+  validateSchemaMiddleware(updateUserShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsEmployerMiddleware, // verificar usuario logado é employer
   updateEmployerUserController
@@ -89,7 +99,7 @@ usersRouter.delete(
 
 usersRouter.patch(
   "/employer/address",
-  validateSchemaMiddleware(updateAddressResponseShape), // validateSchema()
+  validateSchemaMiddleware(updateAddressShape), // validateSchema()
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsEmployerMiddleware, // verificar usuario logado é employer
   updateAddressUserController

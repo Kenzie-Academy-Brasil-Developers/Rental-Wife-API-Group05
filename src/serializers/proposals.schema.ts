@@ -1,43 +1,47 @@
-import { IEmployer } from "./../interface/users.interface";
 import * as yup from "yup";
 import { SchemaOf } from "yup";
 import {
-  IProposalPatchRequest,
+  IProposal,
   IProposalPostRequest,
-  IProposalResponse,
+  IProposalRatingRequest,
+  IProposalStatusRequest,
 } from "../interface/proposals.interface";
 
-const SchemaAddress = {
-  id: yup.string().required(),
-  street: yup.string().required(),
-  zipCode: yup.string().required(),
-  number: yup.string().required(),
-  city: yup.string().required(),
-  state: yup.string().required(),
-};
-
-const SchemaEmployer = {
-  id: yup.string().required(),
-  name: yup.string().required(),
-  email: yup.string().required(),
-  avatar_img: yup.string().required(),
-
-  address: yup.object().shape(SchemaAddress),
-};
-
-const SchemaHired = {
-  id: yup.string().required(),
-  name: yup.string().required(),
-  email: yup.string().required(),
-  avatar_img: yup.string().required(),
-
-  address: yup.object().shape(SchemaAddress),
-};
-
-const SchemaRating = {
+const SchemaProposalsAddress = {
   id: yup.string().notRequired(),
-  recomendation: yup.string().required(),
-  note: yup.number().required(),
+  street: yup.string().notRequired(),
+  zipCode: yup.string().notRequired(),
+  number: yup.string().notRequired(),
+  city: yup.string().notRequired(),
+  state: yup.string().notRequired(),
+};
+
+const SchemaProposalsServices = {
+  id: yup.string().required(),
+  name: yup.string().required(),
+};
+
+const SchemaProposalsEmployer = {
+  id: yup.string().required(),
+  name: yup.string().required(),
+  email: yup.string().required(),
+  avatar_img: yup.string().url().required(),
+  address: yup.object().shape(SchemaProposalsAddress).required(),
+};
+
+const SchemaProposalsHired = {
+  id: yup.string().required(),
+  name: yup.string().required(),
+  email: yup.string().required(),
+  avatar_img: yup.string().url().required(),
+  address: yup.object().shape(SchemaProposalsAddress).notRequired(),
+  services: yup.array(yup.object().shape(SchemaProposalsServices)).required(),
+};
+
+const SchemaProposalsRating = {
+  id: yup.string().notRequired(),
+  recommendation: yup.string().notRequired(),
+  note: yup.number().notRequired(),
 };
 
 export const createProposalRequestShape: SchemaOf<IProposalPostRequest> = yup
@@ -45,29 +49,28 @@ export const createProposalRequestShape: SchemaOf<IProposalPostRequest> = yup
   .shape({
     title: yup.string().required(),
     description: yup.string().required(),
-    status: yup.string().required(),
   });
 
-export const updateProposalRequestShape: SchemaOf<IProposalPatchRequest> = yup
+export const updateStatusRequestShape: SchemaOf<IProposalStatusRequest> = yup
   .object()
   .shape({
     status: yup.string().required(),
-
-    rating: yup.object().shape(SchemaRating).notRequired(),
   });
 
-export const proposalResponseShape: SchemaOf<IProposalResponse> = yup
+export const updateRatingRequestShape: SchemaOf<IProposalRatingRequest> = yup
   .object()
   .shape({
-    title: yup.string(),
-    description: yup.string(),
-    status: yup.string(),
-
-    rating: yup.object().shape(SchemaRating),
-
-    employer: yup.object().shape(SchemaEmployer),
-
-    hired: yup.object().shape(SchemaHired),
+    rating: yup.object().shape(SchemaProposalsRating).required(),
   });
+
+export const proposalResponseShape: SchemaOf<IProposal> = yup.object().shape({
+  id: yup.string().required(),
+  title: yup.string().required(),
+  description: yup.string().required(),
+  status: yup.string().required(),
+  employer: yup.object().shape(SchemaProposalsEmployer).required(),
+  hired: yup.object().shape(SchemaProposalsHired).required(),
+  rating: yup.object().shape(SchemaProposalsRating).notRequired().nullable(),
+});
 
 export const proposalsResponseShapes = yup.array(proposalResponseShape);

@@ -1,6 +1,13 @@
+import { Router } from "express";
+import {
+  updateRatingRequestShape,
+  updateStatusRequestShape,
+} from "./../serializers/proposals.schema";
 import {
   deleteProposalController,
   getProposalController,
+  getProposalsByIdEmployerController,
+  getProposalsByIdHiredController,
   getProposalsController,
   getProposalsEmployerController,
   getProposalsHiredController,
@@ -8,7 +15,6 @@ import {
   patchProposalHiredController,
   postProposalController,
 } from "./../controllers/proposals.controller";
-import { Router } from "express";
 import {
   validateSchemaMiddleware,
   verifyAuthMiddleware,
@@ -18,18 +24,16 @@ import {
   verifyProposalsExistsMiddleware,
   verifyUserIsAdmMiddleware,
 } from "../middlewares";
-import { updateProposalRequestShape } from "../serializers/proposals.schema";
+
 import { verifyEmployerParamsIdExistsMiddleware } from "../middlewares/verifyEmployerParamsIdExists.middleware";
 
 export const proposalsRouter = Router();
 
-proposalsRouter.get("", verifyUserIsAdmMiddleware, getProposalsController);
-
 proposalsRouter.get(
-  "/:id",
+  "",
   verifyAuthMiddleware,
-  verifyProposalsExistsMiddleware,
-  getProposalController
+  verifyUserIsAdmMiddleware,
+  getProposalsController
 );
 
 proposalsRouter.post(
@@ -54,16 +58,7 @@ proposalsRouter.get(
   verifyAuthMiddleware,
   verifyHiredParamsIdExistsMiddleware,
   verifyIsEmployerMiddleware,
-  getProposalsHiredController
-);
-
-proposalsRouter.patch(
-  ":id/hired/",
-  validateSchemaMiddleware(updateProposalRequestShape),
-  verifyAuthMiddleware,
-  verifyProposalsExistsMiddleware,
-  verifyIsHiredMiddleware,
-  patchProposalHiredController
+  getProposalsByIdHiredController
 );
 
 //
@@ -80,12 +75,23 @@ proposalsRouter.get(
   verifyAuthMiddleware,
   verifyIsEmployerMiddleware,
   verifyEmployerParamsIdExistsMiddleware,
-  getProposalsEmployerController
+  getProposalsByIdEmployerController
+);
+
+///
+
+proposalsRouter.patch(
+  "/:id/hired/",
+  validateSchemaMiddleware(updateStatusRequestShape),
+  verifyAuthMiddleware,
+  verifyProposalsExistsMiddleware,
+  verifyIsHiredMiddleware,
+  patchProposalHiredController
 );
 
 proposalsRouter.patch(
-  ":id/employers/",
-  validateSchemaMiddleware(updateProposalRequestShape),
+  "/:id/employers/",
+  validateSchemaMiddleware(updateRatingRequestShape),
   verifyAuthMiddleware,
   verifyProposalsExistsMiddleware,
   verifyIsEmployerMiddleware,
@@ -100,4 +106,11 @@ proposalsRouter.delete(
   verifyProposalsExistsMiddleware,
   verifyIsEmployerMiddleware,
   deleteProposalController
+);
+
+proposalsRouter.get(
+  "/:id",
+  verifyAuthMiddleware,
+  verifyProposalsExistsMiddleware,
+  getProposalController
 );

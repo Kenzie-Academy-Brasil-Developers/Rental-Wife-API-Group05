@@ -1,3 +1,5 @@
+import { string } from "yup";
+import { IService } from "./services.interface";
 export interface IRequestUpdateUser {
   name?: string;
   email?: string;
@@ -6,16 +8,23 @@ export interface IRequestUpdateUser {
   gender?: string;
 }
 
-export interface IResponseUpdateUser {
-  id: string;
-  name: string;
-  email: string;
-  avatar_img: string;
-  gender: string;
-  is_hired: boolean;
+export interface IUpdateUser {
+  name?: string;
+  email?: string;
+  password?: string;
+  avatar_img?: string;
+  gender?: string;
 }
 
-export interface IRequestUpdateAddress {
+export interface IUpdateResponseUser {
+  name?: string;
+  email?: string;
+  avatar_img?: string;
+  gender?: string;
+}
+
+export interface IUpdateAddress {
+  id?: string;
   street?: string;
   zipCode?: string;
   number?: string;
@@ -38,10 +47,14 @@ export interface IRequestUpdateService {
 
 export interface IEmployer {
   id: string;
-  name: string;
-  email: string;
-  avatar_img: string;
-  address?: IAdress | null;
+  name?: string;
+  email?: string;
+  avatar_img?: string;
+  address?: IAddress | null;
+}
+
+export interface IHired extends IEmployer {
+  services?: IService[];
 }
 
 export interface IUserWithoutPass {
@@ -50,8 +63,13 @@ export interface IUserWithoutPass {
   email: string;
 }
 
-export interface IAdress {
+export interface IAdmWithoutPass {
   id: string;
+  email: string;
+}
+
+export interface IAddress {
+  id?: string;
   street: string;
   zipCode: string;
   number: string;
@@ -61,6 +79,15 @@ export interface IAdress {
 
 export interface IRating {
   id?: string;
-  recomendation: string; //TEM Q MUDAR O NOME PARA RECOMMENDATION
+  recommendation: string;
   note: number;
+}
+
+export interface IUserResponse {
+  id: string;
+  name: string;
+  email: string;
+  avatar_img: string;
+  gender: string;
+  address: IAddress;
 }

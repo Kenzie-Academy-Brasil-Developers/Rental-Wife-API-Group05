@@ -13,8 +13,14 @@ export const loginService = async ({
   const userERepository = AppDataSource.getRepository(UserEmployer);
   const userHRepository = AppDataSource.getRepository(UserHired);
 
-  const userE = await userERepository.findOneBy({ email: email });
-  const userH = await userHRepository.findOneBy({ email: email });
+  const userE = await userERepository.findOne({
+    select: ["password", "id"],
+    where: { email: email },
+  });
+  const userH = await userHRepository.findOne({
+    select: ["password", "id"],
+    where: { email: email },
+  });
 
   if (!userE && !userH) {
     throw new AppError("Email or password invalid!", 403);

@@ -9,11 +9,16 @@ export const verifyProposalsExistsMiddleware = async (
   next: NextFunction
 ) => {
   const proposalsRepo = AppDataSource.getRepository(Proposals);
-  const findProposals = await proposalsRepo.findOneBy({ id: req.params.id });
+  const findProposals = await proposalsRepo.findOne({
+    where: { id: req.params.id },
+    relations: { employer: true, hired: true },
+  });
 
   if (!findProposals) {
     throw new AppError("Proposal not found", 404);
   }
+
   req.proposal = findProposals;
+
   return next();
 };

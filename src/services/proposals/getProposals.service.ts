@@ -1,15 +1,15 @@
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
+import { proposalRepository } from "../../repositories";
+import { IProposal } from "../../interface/proposals.interface";
 import { proposalsResponseShapes } from "./../../serializers/proposals.schema";
-import { IProposalResponse } from "../../interface/proposals.interface";
 
-export const getProposalsService = async (): Promise<IProposalResponse[]> => {
-  const proposalRepository = AppDataSource.getRepository(Proposals);
-
-  const proposals = await proposalRepository.find();
+export const getProposalsService = async (): Promise<IProposal[]> => {
+  const proposals = await proposalRepository.find({
+    relations: { employer: true, hired: true, rating: true },
+  });
 
   const verifiedResponseProposal = proposalsResponseShapes.validate(proposals, {
     stripUnknown: true,
   });
+
   return verifiedResponseProposal;
 };

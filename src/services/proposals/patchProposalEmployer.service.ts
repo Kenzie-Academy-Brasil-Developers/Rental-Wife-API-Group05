@@ -1,29 +1,40 @@
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
+import { proposalRepository, ratingRepository } from "../../repositories";
+import { IProposal } from "./../../interface/proposals.interface";
 import { proposalResponseShape } from "../../serializers/proposals.schema";
-import {
-  IProposalResponse,
-  IProposalPatchRequest,
-} from "./../../interface/proposals.interface";
+import { IRating } from "./../../interface/users.interface";
+import { AppError } from "../../errors";
 
 export const patchProposalEmployerService = async (
-  proposalId: string,
-  updatedBody: IProposalPatchRequest
-): Promise<IProposalResponse> => {
-  const proposalRepository = AppDataSource.getRepository(Proposals);
+  proposal: IProposal,
+  rating?: IRating
+): Promise<IProposal> => {
+  if (proposal.status !== "Em andamento") {
+    throw new AppError("Missing hired permission", 401);
+  }
+
+  const ratingObj = rating.recommendation
+    ? { note: rating.note, recommendation: rating.recommendation }
+    : { note: rating.note, recommendation: "" };
+
+  const ratingCreated = ratingRepository.create(ratingObj);
+  await ratingRepository.save(ratingCreated);
 
   const proposalPatch = {
-    id: proposalId,
-    ...updatedBody,
+    ...proposal,
+    employer: proposal.employer,
+    hired: proposal.hired,
+    status: "Concluída",
+    rating: ratingCreated,
   };
 
   await proposalRepository.save(proposalPatch);
 
-  const verifiedResponseProposal = proposalResponseShape.validate(
+  const verifiedResponseProposal = await proposalResponseShape.validate(
     proposalPatch,
     {
       stripUnknown: true,
     }
   );
+
   return verifiedResponseProposal;
 };

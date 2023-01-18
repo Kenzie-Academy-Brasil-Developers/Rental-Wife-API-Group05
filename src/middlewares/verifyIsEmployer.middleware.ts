@@ -15,5 +15,6 @@ export const verifyIsEmployerMiddleware = async (
     throw new AppError("Missing employer permission", 401);
   }
   req.user = loggedUser;
+
   return next();
 };

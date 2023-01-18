@@ -34,7 +34,7 @@ export class Proposals {
   @ManyToOne(() => UserHired, (userHired) => userHired.proposals)
   hired: UserHired;
 
-  @OneToOne(() => Rating)
+  @OneToOne(() => Rating, { nullable: true })
   @JoinColumn()
   rating: Rating;
 }

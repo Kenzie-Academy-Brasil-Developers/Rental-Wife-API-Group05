@@ -27,10 +27,10 @@ export class UserHired {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ select: false })
   is_hired: boolean;
 
   @Column()
@@ -39,26 +39,25 @@ export class UserHired {
   @Column({ nullable: true })
   gender: string;
 
-  @Column({ nullable: true })
-  location: string;
-
-  @DeleteDateColumn()
+  @DeleteDateColumn({ select: false })
   deletedAt?: Date;
 
   @OneToMany(() => Proposals, (proposals) => proposals.hired)
   proposals: Proposals[];
 
-  @ManyToMany(() => Services, (services) => services.usersHired)
+  @ManyToMany(() => Services, (services) => services.usersHired, {
+    eager: true,
+  })
   @JoinTable()
   services: Services[];
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { eager: true })
   @JoinColumn()
   address: Address;
 
   @BeforeUpdate()
   @BeforeInsert()
   hashPassword(): void {
-    this.password = hashSync(this.password, 10);
+    if (this.password) this.password = hashSync(this.password, 10);
   }
 }

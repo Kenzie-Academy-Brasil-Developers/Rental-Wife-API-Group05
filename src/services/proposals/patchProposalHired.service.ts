@@ -1,31 +1,34 @@
-import { AppDataSource } from "../../data-source";
-import { Proposals } from "../../entities/proposal.entity";
-import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { proposalRepository } from "../../repositories";
 import {
-  IProposalResponse,
-  IProposalPatchRequest,
+  IProposal,
+  IProposalStatusRequest,
 } from "./../../interface/proposals.interface";
+import { proposalResponseShape } from "../../serializers/proposals.schema";
+import { AppError } from "../../errors";
 
 export const patchProposalHiredService = async (
-  proposalId: string,
-  updatedBody: IProposalPatchRequest
-): Promise<IProposalResponse> => {
-  const proposalRepository = AppDataSource.getRepository(Proposals);
+  proposal: IProposal,
+  statusBody: IProposalStatusRequest
+): Promise<IProposal> => {
+  if (
+    proposal.status !== "Enviada" ||
+    (statusBody.status !== "Recusada" && statusBody.status !== "Em andamento")
+  ) {
+    throw new AppError("Missing employer permission", 401);
+  }
 
   const proposalPatch = {
-    id: proposalId,
-    ...updatedBody,
+    ...proposal,
+    status: statusBody.status,
   };
 
   await proposalRepository.save(proposalPatch);
 
-  const verifiedResponseProposal = proposalResponseShape.validate(
+  const verifiedResponseProposal = await proposalResponseShape.validate(
     proposalPatch,
     {
       stripUnknown: true,
     }
   );
   return verifiedResponseProposal;
-
-  // VERIFICAR SE A PROPOSTA FOI ENCERRADA, CASO ESTEJA ENCERRADA, DISPARAR UM ERROR
 };
