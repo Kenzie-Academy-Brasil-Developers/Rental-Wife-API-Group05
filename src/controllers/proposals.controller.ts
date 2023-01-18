@@ -121,5 +121,5 @@ export const deleteProposalController = async (req: Request, res: Response) => {
 
   await deleteProposalService(proposal);
 
-  return res.status(204);
+  return res.status(204).json({});
 };
