@@ -10,8 +10,9 @@ import {
   updateAddressUserHiredController,
   updateUserHiredController,
   getAllHiredUsersController,
-  getHiredUserController,
+  retrieveHiredUserController,
   updateServiceUserHiredController,
+  getHiredUserController,
 } from "../controllers/usersHired.controller";
 import {
   verifyAuthMiddleware,
@@ -27,14 +28,21 @@ import {
 
 export const usersRouter = Router();
 
-usersRouter.get("/hired", getAllHiredUsersController);
+usersRouter.get("/hired/all", getAllHiredUsersController);
+
+usersRouter.get(
+  "/hired",
+  verifyAuthMiddleware, // verificar se o usuario logado
+  verifyIsHiredMiddleware, // verificar usuario logado é employer
+  getHiredUserController
+);
 
 usersRouter.get(
   "/hired/:id",
   verifyAuthMiddleware, // verificar usuario logado
   verifyHiredParamsIdExistsMiddleware, // verificar se id do parametro é um hired
   verifyIsEmployerMiddleware, // verificar se o usuario logado é um employer
-  getHiredUserController
+  retrieveHiredUserController
 );
 
 usersRouter.patch(
