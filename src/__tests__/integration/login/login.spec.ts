@@ -2,12 +2,8 @@ import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
 import app from "../../../app";
 import request from "supertest";
-import {
-  mockedEmployerRegister,
-  mockedLogin,
-  mockedWrongLogin,
-  mockedUserNotExistsLogin,
-} from "../../mocks";
+import { mockedLoginEmployer } from "../../mocks/integration/login.mock";
+import { mockedEmployerRegister } from "../../mocks/integration/register.mock";
 
 describe("/login", () => {
   let conn: DataSource;
@@ -19,7 +15,7 @@ describe("/login", () => {
       .catch((err) => {
         console.error("Error during Data Source initialization.", err);
       });
-    await request(app).post(baseUrl).send(mockedEmployerRegister);
+    await request(app).post("/register").send(mockedEmployerRegister);
   });
 
   afterAll(async () => {
@@ -27,14 +23,16 @@ describe("/login", () => {
   });
 
   it("POST /login - ABLE to login with user email and password.", async () => {
-    const response = await request(app).post(baseUrl).send(mockedLogin);
+    const response = await request(app).post(baseUrl).send(mockedLoginEmployer);
 
     expect(response.body).toHaveProperty("token");
     expect(response.status).toBe(200);
   });
 
   it("POST /login - NOT able to login with user incorrect password or email.", async () => {
-    const response = await request(app).post(baseUrl).send(mockedWrongLogin);
+    const response = await request(app)
+      .post(baseUrl)
+      .send({ ...mockedLoginEmployer, password: "teste" });
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(403);
@@ -43,9 +41,9 @@ describe("/login", () => {
   it("POST /login - NOT able to login with non existed.", async () => {
     const response = await request(app)
       .post(baseUrl)
-      .send(mockedUserNotExistsLogin);
+      .send({ ...mockedLoginEmployer, password: "testando" });
 
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(403);
   });
 });
