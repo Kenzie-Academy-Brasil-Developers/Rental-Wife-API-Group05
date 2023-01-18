@@ -20,7 +20,10 @@ import {
   verifyIsHiredMiddleware,
   validateSchemaMiddleware,
 } from "../middlewares";
-import { updateAddressShape, updateUserShape } from "../serializers/users.schema";
+import {
+  updateAddressShape,
+  updateUserShape,
+} from "../serializers/users.schema";
 
 export const usersRouter = Router();
 
@@ -61,7 +64,6 @@ usersRouter.patch(
   "/hired/services",
   verifyAuthMiddleware, // verificar se o usuario logado
   verifyIsHiredMiddleware, // verificar usuario logado é hired
-  // verificar se o service existe (FAZER DENTRO DO SERVICE)
   updateServiceUserHiredController
 );
 

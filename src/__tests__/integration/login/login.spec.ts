@@ -40,6 +40,6 @@ describe("/login", () => {
     const response = await request(app).post(baseUrl).send({ ...mockedLoginEmployer, email: "invalido@gmail.com" });
 
     expect(response.body).toHaveProperty("message");
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(403);
   });
 });

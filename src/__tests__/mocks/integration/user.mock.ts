@@ -20,3 +20,7 @@ export const mockedAdminRegister: IAdminPostRequest = {
   email: "adm@mail.com",
   password: "123456",
 };
+
+export const mockedCreateService = {
+  name: "Hidraulica",
+};
