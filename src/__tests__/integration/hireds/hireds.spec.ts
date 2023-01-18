@@ -36,7 +36,10 @@ describe("/hireds", () => {
       .post("/admin/login")
       .send(mockedLoginAdmin);
     const token = `Bearer ${admin.body.token}`;
-    await request(app).post("/services").send(mockedCreateService);
+    await request(app)
+      .post("/services")
+      .send(mockedCreateService)
+      .set("Authorization", token);
   });
 
   afterAll(async () => {
@@ -45,25 +48,71 @@ describe("/hireds", () => {
 
   // LISTAR TODOS OS USUARIOS HIRED
 
-  it("GET /hireds - Able to list all hired users.", async () => {
-    const response = await request(app).get(baseUrl);
+  it("GET /hired/all - Able to list all hired users.", async () => {
+    const response = await request(app).get(`${baseUrl}/all`);
 
     expect(response.body).toHaveLength(1);
     expect(response.status).toBe(200);
   });
 
-  // LISTAR UM USUARIO HIRED
+  // LISTAR O USUARIO HIRED LOGADO
 
-  it("GET /hireds/:id - Not be able to list a hired user without authentication.", async () => {
-    const user = await request(app).get("/users/hired");
-
-    const response = await request(app).get(`${baseUrl}/${user.body[0].id}`);
+  it("GET /hired - Not be able to list a hired user logged without authentication.", async () => {
+    const response = await request(app).get(baseUrl);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  it("GET /hireds/:id - Not be able to list a hired if params id do not exists.", async () => {
+  it("GET /hired - Not be able to list a hired user if logged not a hired.", async () => {
+    const employerLogin = await request(app)
+      .post("/login")
+      .send(mockedLoginEmployer);
+
+    const token = `Bearer ${employerLogin.body.token}`;
+
+    const response = await request(app)
+      .get(baseUrl)
+      .set("Authorization", token);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("GET /hired - Able to list a hired user logged.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const response = await request(app)
+      .get(baseUrl)
+      .set("Authorization", token);
+
+    expect(response.body).toHaveProperty("gender");
+    expect(response.body).toHaveProperty("avatar_img");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body).toHaveProperty("address");
+    expect(response.body).not.toHaveProperty("password");
+    expect(response.status).toBe(200);
+  });
+
+  // LISTAR O USUARIO HIRED PASSADO PELO PARAMS IDs
+
+  it("GET /hired/:id - Not be able to list a hired user without authentication.", async () => {
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+
+    const token = `Bearer ${hiredLogin.body.token}`;
+
+    const user = await request(app).get(baseUrl).set("Authorization", token);
+
+    const response = await request(app).get(`${baseUrl}/${user.body.id}`);
+
+    expect(response.body).toHaveProperty("message");
+    expect(response.status).toBe(401);
+  });
+
+  it("GET /hired/:id - Not be able to list a hired if params id do not exists.", async () => {
     const employerLogin = await request(app)
       .post("/login")
       .send(mockedLoginEmployer);
@@ -78,31 +127,36 @@ describe("/hireds", () => {
     expect(response.status).toBe(404);
   });
 
-  it("GET /hireds/:id - Not be able to list a hired user if logged not a employer.", async () => {
+  it("GET /hired/:id - Not be able to list a hired user if logged not a employer.", async () => {
     const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
-
-    const user = await request(app).get("/users/hired");
 
     const token = `Bearer ${hiredLogin.body.token}`;
 
+    const userHired = await request(app)
+      .get(baseUrl)
+      .set("Authorization", token);
+
     const response = await request(app)
-      .get(`${baseUrl}/${user.body[0].id}`)
+      .get(`${baseUrl}/${userHired.body.id}`)
       .set("Authorization", token);
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(401);
   });
 
-  it("GET /hireds/:id - Able to list a hired user.", async () => {
+  it("GET /hired/:id - Able to list a hired user.", async () => {
     const employerLogin = await request(app)
       .post("/login")
       .send(mockedLoginEmployer);
-    const user = await request(app).get("/users/hired");
-
     const token = `Bearer ${employerLogin.body.token}`;
 
+    const hiredLogin = await request(app).post("/login").send(mockedLoginHired);
+    const userHired = await request(app)
+      .get(baseUrl)
+      .set("Authorization", `Bearer ${hiredLogin.body.token}`);
+
     const response = await request(app)
-      .get(`${baseUrl}/${user.body[0].id}`)
+      .get(`${baseUrl}/${userHired.body.id}`)
       .set("Authorization", token);
 
     expect(response.body).toHaveProperty("gender");
