@@ -1,8 +1,3 @@
-import { UserHired } from "../../../entities/userHired.entity";
-import { userHiredRepo } from "../../../repositories";
+import { Request } from "express";
 
-export const getHiredUserService = async (
-    userId: string
-  ): Promise<UserHired> => {
-    return await userHiredRepo.findOneBy({ id: userId });
-};
+export const getHiredUserService = (req: Request) => req.user;
