@@ -21,7 +21,7 @@ describe("/login", () => {
   afterAll(async () => {
     await conn.destroy();
   });
-
+  
   it("POST /login - ABLE to login with user email and password.", async () => {
     const response = await request(app).post(baseUrl).send(mockedLoginEmployer);
 
@@ -30,18 +30,14 @@ describe("/login", () => {
   });
 
   it("POST /login - NOT able to login with user incorrect password or email.", async () => {
-    const response = await request(app)
-      .post(baseUrl)
-      .send({ ...mockedLoginEmployer, password: "teste" });
+    const response = await request(app).post(baseUrl).send({ ...mockedLoginEmployer, password: "invalido" });
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(403);
   });
 
   it("POST /login - NOT able to login with non existed.", async () => {
-    const response = await request(app)
-      .post(baseUrl)
-      .send({ ...mockedLoginEmployer, password: "testando" });
+    const response = await request(app).post(baseUrl).send({ ...mockedLoginEmployer, email: "invalido@gmail.com" });
 
     expect(response.body).toHaveProperty("message");
     expect(response.status).toBe(403);

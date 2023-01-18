@@ -8,7 +8,7 @@ export const mockedProposalAccept = {
 }
 
 export const mockedProposalReject = {
-  status: "Recusado"
+  status: "Recusada"
 }
 
 export const mockedProposalDone = {

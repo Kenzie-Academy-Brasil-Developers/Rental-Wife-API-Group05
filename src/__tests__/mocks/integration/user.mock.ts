@@ -1,3 +1,5 @@
+import { IAdminPostRequest } from "../../../interface/admin.interface";
+
 export const mockedUpdateAddress = {
   street: "Vale do caxaubas",
   zipCode: "4021846",
@@ -12,6 +14,11 @@ export const mockedUpdateUser = {
 
 export const mockedUpdateServiceUser = {
   services: ["Hidraulica"],
+};
+
+export const mockedAdminRegister: IAdminPostRequest = {
+  email: "adm@mail.com",
+  password: "123456",
 };
 
 export const mockedCreateService = {
