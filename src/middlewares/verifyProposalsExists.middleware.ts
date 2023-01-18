@@ -20,7 +20,5 @@ export const verifyProposalsExistsMiddleware = async (
 
   req.proposal = findProposals;
 
-  console.log(req.proposal);
-
   return next();
 };

@@ -1,8 +1,8 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
-import { mockedEmployerRegister } from "../../mocks";
 import app from "../../../app";
 import request from "supertest";
+import { mockedEmployerRegister } from "../../mocks/integration/register.mock";
 
 describe("POST - /register", () => {
   let conn: DataSource;
